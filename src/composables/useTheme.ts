@@ -1,6 +1,8 @@
-import { ref, computed, onMounted } from 'vue';
+import { ref, computed, onMounted, watch } from 'vue';
 
 type Theme = 'paperwhite' | 'paperblack';
+
+const STORAGE_KEY = 'appTheme';
 
 const theme = ref<Theme>('paperwhite');
 
@@ -10,6 +12,7 @@ export function useTheme() {
   function applyTheme(t: Theme) {
     theme.value = t;
     document.documentElement.setAttribute('data-theme', t);
+    localStorage.setItem(STORAGE_KEY, t);
   }
 
   function toggleTheme() {
@@ -17,7 +20,8 @@ export function useTheme() {
   }
 
   onMounted(() => {
-    applyTheme(theme.value);
+    const saved = localStorage.getItem(STORAGE_KEY) as Theme | null;
+    applyTheme(saved ?? theme.value);
   });
 
   return {

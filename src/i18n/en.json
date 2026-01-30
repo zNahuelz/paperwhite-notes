@@ -1,0 +1,38 @@
+{
+  "common": {
+    "save": "Save",
+    "cancel": "Cancel",
+    "switchTheme": "Switch theme",
+    "loading": "Loading",
+    "selectedFile": "Selected file",
+    "continue": "Continue"
+  },
+  "menu": {
+    "settings": "Settings",
+    "language": "Language"
+  },
+  "routes": {
+    "home": "Home",
+    "about": "About",
+    "settings": "Settings"
+  },
+  "home": {
+    "home": "Home",
+    "processingFile": "Processing file",
+    "highlightsFound": "A total of {count} highlight was found | A total of {count} highlights were found",
+    "errorsFound": "A total of {count} error was found | A total of {count} errors were found",
+    "viewErrors": "View errors",
+    "jobResult": "Job result",
+    "savedBooks": "A total of {count} book was saved | A total of {count} books were saved",
+    "noNewBooksSaved": "No new books were found during the process"
+  },
+  "settings": {
+    "appLanguage": "App Language"
+  },
+  "errors": {
+    "notEnoughLines": "Not enough lines to read the file",
+    "missingBookName": "Missing book name",
+    "missingLocationMetadata": "Missing location metadata",
+    "emptyHighlight": "Highlight content is empty"
+  }
+}

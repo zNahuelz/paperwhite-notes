@@ -1,0 +1,38 @@
+{
+  "common": {
+    "save": "Guardar",
+    "cancel": "Cancelar",
+    "switchTheme": "Cambiar tema",
+    "loading": "Cargando",
+    "selectedFile": "Archivo seleccionado",
+    "continue": "Continuar"
+  },
+  "menu": {
+    "settings": "Configuración",
+    "language": "Idioma"
+  },
+  "routes": {
+    "home": "Inicio",
+    "about": "Acerca de",
+    "settings": "Configuración"
+  },
+  "home": {
+    "home": "Inicio",
+    "processingFile": "Procesando archivo",
+    "highlightsFound": "Se encontró un total de {count} marcadores | Se encontraron un total de {count} marcadores",
+    "errorsFound": "Se encontró un total de {count} error | Se encontraron un total de {count} errores",
+    "viewErrors": "Ver errores",
+    "jobResult": "Resultado de operación",
+    "savedBooks": "Se guardó un total de {count} libro | Se guardo un total de {count} libros",
+    "noNewBooksSaved": "No se encontraron libros nuevos durante el proceso"
+  },
+  "settings": {
+    "appLanguage": "Idioma de la Aplicación"
+  },
+  "errors": {
+    "notEnoughLines": "Líneas insuficientes para realizar lectura",
+    "missingBookName": "Nombre de libro no encontrado",
+    "missingLocationMetadata": "Metadatos de ubicación no encontrados",
+    "emptyHighlight": "El marcador o cita está vacío"
+  }
+}

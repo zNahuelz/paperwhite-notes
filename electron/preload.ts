@@ -22,3 +22,22 @@ contextBridge.exposeInMainWorld('ipcRenderer', {
   // You can expose other APTs you need here.
   // ...
 });
+
+contextBridge.exposeInMainWorld('api', {
+  books: {
+    list: () => ipcRenderer.invoke('books:list'),
+    get: (id: number) => ipcRenderer.invoke('books:get', id),
+    byTitle: (title: string) => ipcRenderer.invoke('books:byTitle', title),
+    create: (data: any) => ipcRenderer.invoke('books:create', data),
+    update: (id: number, data: any) => ipcRenderer.invoke('books:update', id, data),
+    delete: (id: number) => ipcRenderer.invoke('books:delete', id),
+  },
+
+  highlights: {
+    byBook: (bookId: number) => ipcRenderer.invoke('highlights:byBook', bookId),
+    byContent: (content: string) => ipcRenderer.invoke('highlights:byContent', content),
+    create: (data: any) => ipcRenderer.invoke('highlights:create', data),
+    update: (id: number, data: any) => ipcRenderer.invoke('highlights:update', id, data),
+    delete: (id: number) => ipcRenderer.invoke('highlights:delete', id),
+  },
+});

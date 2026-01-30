@@ -1,0 +1,11 @@
+CREATE TABLE highlights (
+  id INTEGER PRIMARY KEY AUTOINCREMENT,
+  book_id INTEGER NOT NULL,
+  date TEXT NOT NULL,
+  location TEXT NULL,
+  content TEXT NOT NULL,
+  created_at TEXT DEFAULT CURRENT_TIMESTAMP,
+  updated_at TEXT,
+  is_deleted INTEGER DEFAULT 0,
+  FOREIGN KEY (book_id) REFERENCES books (id) ON DELETE CASCADE
+);

@@ -1,10 +1,18 @@
-import { app, BrowserWindow, Menu } from 'electron';
+import { app, BrowserWindow, globalShortcut, ipcMain, Menu } from 'electron';
 import { createRequire } from 'node:module';
 import { fileURLToPath } from 'node:url';
 import path from 'node:path';
+import { initDatabase } from './db';
+import { BookRepository } from './db/repositories/book.repo';
+import { HighlightRepository } from './db/repositories/highlight.repo';
 
 const require = createRequire(import.meta.url);
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
+
+process.on('unhandledRejection', (reason) => {
+  console.error('[UNHANDLED REJECTION]', reason);
+  throw reason;
+});
 
 // The built directory structure
 //
@@ -54,6 +62,27 @@ function createWindow() {
   }
 }
 
+function registerIpcHandlers() {
+  ipcMain.handle('books:list', () => BookRepository.findAll());
+  ipcMain.handle('books:get', (_, id: number) => BookRepository.findById(id));
+  ipcMain.handle('books:byTitle', (_, title: string) => BookRepository.findByTitle(title));
+  ipcMain.handle('books:create', (_, payload) => BookRepository.create(payload));
+  ipcMain.handle('books:update', (_, id: number, payload) => BookRepository.update(id, payload));
+  ipcMain.handle('books:delete', (_, id: number) => BookRepository.softDelete(id));
+
+  ipcMain.handle('highlights:byBook', (_, bookId: number) =>
+    HighlightRepository.findByBook(bookId)
+  );
+  ipcMain.handle('highlights:byContent', (_, content: string) =>
+    HighlightRepository.findByContent(content)
+  );
+  ipcMain.handle('highlights:create', (_, payload) => HighlightRepository.create(payload));
+  ipcMain.handle('highlights:update', (_, id: number, payload) =>
+    HighlightRepository.update(id, payload)
+  );
+  ipcMain.handle('highlights:delete', (_, id: number) => HighlightRepository.softDelete(id));
+}
+
 // Quit when all windows are closed, except on macOS. There, it's common
 // for applications and their menu bar to stay active until the user quits
 // explicitly with Cmd + Q.
@@ -74,5 +103,11 @@ app.on('activate', () => {
 
 app.whenReady().then(() => {
   Menu.setApplicationMenu(null);
+  globalShortcut.register('CommandOrControl+Shift+I', () => {
+    const win = BrowserWindow.getFocusedWindow();
+    win?.webContents.toggleDevTools();
+  });
+  initDatabase();
+  registerIpcHandlers();
   createWindow();
 });

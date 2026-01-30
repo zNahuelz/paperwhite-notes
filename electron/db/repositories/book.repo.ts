@@ -1,0 +1,115 @@
+import { getDatabase } from '../index';
+import { Book } from '../types/book';
+
+function mapRowToBook(row: any): Book {
+  return {
+    id: row.id,
+    title: row.title,
+    author: row.author,
+    description: row.description ?? undefined,
+    cover: row.cover ?? undefined,
+    createdAt: new Date(row.created_at),
+    updatedAt: row.updated_at ? new Date(row.updated_at) : new Date(row.created_at),
+    isDeleted: Boolean(row.is_deleted),
+  };
+}
+
+export class BookRepository {
+  static create(data: Omit<Book, 'id' | 'createdAt' | 'updatedAt' | 'isDeleted'>): Book {
+    const now = new Date().toISOString();
+    const result = getDatabase()
+      .prepare(
+        `INSERT INTO BOOKS (title, author, description, cover, created_at, is_deleted) VALUES (?,?,?,?,?,0)`
+      )
+      .run(data.title, data.author, data.description ?? null, data.cover ?? null, now);
+
+    return this.findById(Number(result.lastInsertRowid))!;
+  }
+
+  static findById(id: number): Book | null {
+    const row = getDatabase()
+      .prepare(
+        `
+        SELECT *
+        FROM books
+        WHERE id = ? AND is_deleted = 0
+      `
+      )
+      .get(id);
+
+    return row ? mapRowToBook(row) : null;
+  }
+
+  static findByTitle(title: string): Book | null {
+    const row = getDatabase()
+      .prepare(`SELECT * FROM books WHERE title = ? AND is_deleted = 0`)
+      .get(title);
+    return row ? mapRowToBook(row) : null;
+  }
+
+  static findAll(): Book[] {
+    return getDatabase()
+      .prepare(
+        `
+        SELECT *
+        FROM books
+        WHERE is_deleted = 0
+        ORDER BY created_at DESC
+      `
+      )
+      .all()
+      .map(mapRowToBook);
+  }
+
+  static update(
+    id: number,
+    data: Partial<Omit<Book, 'id' | 'createdAt' | 'isDeleted'>>
+  ): Book | null {
+    const fields: string[] = [];
+    const values: any[] = [];
+
+    if (data.title !== undefined) {
+      fields.push('title = ?');
+      values.push(data.title);
+    }
+    if (data.description !== undefined) {
+      fields.push('description = ?');
+      values.push(data.description);
+    }
+    if (data.cover !== undefined) {
+      fields.push('cover = ?');
+      values.push(data.cover);
+    }
+
+    fields.push('updated_at = ?');
+    values.push(new Date().toISOString());
+
+    values.push(id);
+
+    getDatabase()
+      .prepare(
+        `
+        UPDATE books
+        SET ${fields.join(', ')}
+        WHERE id = ? AND is_deleted = 0
+      `
+      )
+      .run(...values);
+
+    return this.findById(id);
+  }
+
+  static softDelete(id: number): boolean {
+    const result = getDatabase()
+      .prepare(
+        `
+        UPDATE books
+        SET is_deleted = 1, updated_at = ?
+        WHERE id = ?
+      `
+      )
+      .run(new Date().toISOString(), id);
+
+    return result.changes > 0;
+  }
+}
