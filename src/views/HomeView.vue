@@ -12,15 +12,18 @@ import {
 } from '@/features/parser';
 import BaseLoading from '@/components/BaseLoading.vue';
 import BaseModal from '@/components/BaseModal.vue';
+
 const { t } = useI18n();
 const file = ref<File | null>(null);
 const isLoading = ref(false);
 const showResultsModal = ref(false);
-//TODO: Wip....!
+// TODO::: const showErrorsModal = ref(false);
+
 const clippings = ref<Clipping[]>([]);
 const errors = ref<ClippingParseError[]>([]);
 const parseResult = ref<ParseResult | null>();
 const savedBooks = ref(0);
+const savedHighlights = ref(0);
 
 const processFile = async () => {
   if (!file.value) return;
@@ -32,7 +35,7 @@ const processFile = async () => {
     parseResult.value = parseClippings(text);
     clippings.value = parseResult.value.clippings;
     errors.value = parseResult.value.errors;
-    await storeBooks();
+    await storeBooks().then(async () => await storeHighlights());
   } catch (error) {
     console.log(error);
   } finally {
@@ -54,6 +57,35 @@ const storeBooks = async () => {
       });
     }
   }
+};
+
+const storeHighlights = async () => {
+  if (!clippings.value.length) return;
+
+  const seen = new Set<string>();
+  for (const c of clippings.value) {
+    const key = `${c.bookName}::${c.content.trim()}`;
+
+    if (seen.has(key)) continue;
+    seen.add(key);
+    await storeHighlightIfNotExists(c);
+  }
+};
+
+const storeHighlightIfNotExists = async (c: Clipping) => {
+  const book = await window.api.books.byTitle(c.bookName);
+
+  if (!book) return;
+
+  const exists = await window.api.highlights.exists(book.id, c.content.trim());
+  if (exists) return;
+  await window.api.highlights.create({
+    bookId: book.id,
+    date: c.date,
+    location: c.location,
+    content: c.content,
+  });
+  savedHighlights.value += 1;
 };
 
 const handleResultModal = () => {
@@ -90,14 +122,14 @@ const handleResultModal = () => {
     <div>
       <h1 class="font-light text-lg">
         {{
-          t('home.highlightsFound', parseResult?.clippings?.length, {
+          t('home.highlightsFound', {
             count: parseResult?.clippings.length,
           })
         }}
       </h1>
       <h1 class="font-light text-lg">
         {{
-          t('home.errorsFound', parseResult?.errors?.length, {
+          t('home.errorsFound', {
             count: parseResult?.errors.length,
           })
         }}
@@ -107,8 +139,18 @@ const handleResultModal = () => {
       </h1>
       <h1 class="font-light text-lg" v-else>
         {{
-          t('home.savedBooks', savedBooks, {
+          t('home.savedBooks', {
             count: savedBooks,
+          })
+        }}
+      </h1>
+      <h1 class="font-light text-lg" v-if="savedHighlights <= 0">
+        {{ t('home.noNewHighlightsSaved') }}
+      </h1>
+      <h1 class="font-light text-lg" v-else>
+        {{
+          t('home.savedHighlights', {
+            count: savedHighlights,
           })
         }}
       </h1>

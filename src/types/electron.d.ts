@@ -20,6 +20,7 @@ declare global {
         ): Promise<Highlight>;
         update(id: number, data: Partial<Highlight>): Promise<Highlight | null>;
         delete(id: number): Promise<boolean>;
+        exists(bookId: number, content: string): Promise<boolean>;
       };
     };
   }

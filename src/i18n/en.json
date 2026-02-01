@@ -5,7 +5,11 @@
     "switchTheme": "Switch theme",
     "loading": "Loading",
     "selectedFile": "Selected file",
-    "continue": "Continue"
+    "continue": "Continue",
+    "reset": "Reset",
+    "search": "Search",
+    "goBack": "Go back",
+    "copy": "Copy"
   },
   "menu": {
     "settings": "Settings",
@@ -13,6 +17,7 @@
   },
   "routes": {
     "home": "Home",
+    "library": "Library",
     "about": "About",
     "settings": "Settings"
   },
@@ -24,7 +29,17 @@
     "viewErrors": "View errors",
     "jobResult": "Job result",
     "savedBooks": "A total of {count} book was saved | A total of {count} books were saved",
-    "noNewBooksSaved": "No new books were found during the process"
+    "noNewBooksSaved": "No new books were found during the process",
+    "savedHighlights": "A total of {count} highlight was saved | A total of {count} highlights were saved",
+    "noNewHighlightsSaved": "No new highlights were found during the process"
+  },
+  "library": {
+    "myBooks": "My Books",
+    "unknownAuthor": "Unknown author",
+    "emptyBooksTable": "Oops! There's no books saved. Try to load them on the home section."
+  },
+  "highlights": {
+    "highlights": "Highlights"
   },
   "settings": {
     "appLanguage": "App Language"

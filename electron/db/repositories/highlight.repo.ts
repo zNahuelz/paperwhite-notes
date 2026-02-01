@@ -20,11 +20,7 @@ export class HighlightRepository {
 
     const result = getDatabase()
       .prepare(
-        `
-        INSERT INTO highlights (
-          book_id, date, location, content, created_at, is_deleted
-        ) VALUES (?, ?, ?, ?, ?, 0)
-      `
+        `INSERT INTO highlights (book_id, date, location, content, created_at, is_deleted) VALUES (?, ?, ?, ?, ?, 0)`
       )
       .run(data.bookId, data.date.toISOString(), data.location ?? null, data.content, now);
 
@@ -47,14 +43,7 @@ export class HighlightRepository {
 
   static findByBook(bookId: number): Highlight[] {
     return getDatabase()
-      .prepare(
-        `
-        SELECT *
-        FROM highlights
-        WHERE book_id = ? AND is_deleted = 0
-        ORDER BY date DESC
-      `
-      )
+      .prepare(`SELECT *FROM highlights WHERE book_id = ? AND is_deleted = 0 ORDER BY date DESC`)
       .all(bookId)
       .map(mapRowToHighlight);
   }
@@ -85,13 +74,7 @@ export class HighlightRepository {
     values.push(id);
 
     getDatabase()
-      .prepare(
-        `
-        UPDATE highlights
-        SET ${fields.join(', ')}
-        WHERE id = ? AND is_deleted = 0
-      `
-      )
+      .prepare(`UPDATE highlights SET ${fields.join(', ')} WHERE id = ? AND is_deleted = 0`)
       .run(...values);
 
     return this.findById(id);
@@ -99,15 +82,18 @@ export class HighlightRepository {
 
   static softDelete(id: number): boolean {
     const result = getDatabase()
-      .prepare(
-        `
-        UPDATE highlights
-        SET is_deleted = 1, updated_at = ?
-        WHERE id = ?
-      `
-      )
+      .prepare(`UPDATE highlights SET is_deleted = 1, updated_at = ? WHERE id = ?`)
       .run(new Date().toISOString(), id);
 
     return result.changes > 0;
+  }
+
+  static highlightExists(bookId: number, content: string): boolean {
+    const stmt = getDatabase().prepare(
+      `SELECT 1 FROM highlights WHERE book_id = ? AND content = ? LIMIT 1`
+    );
+
+    const row = stmt.get(bookId, content.trim());
+    return !!row;
   }
 }

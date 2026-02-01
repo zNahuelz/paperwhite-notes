@@ -5,7 +5,12 @@
     "switchTheme": "Cambiar tema",
     "loading": "Cargando",
     "selectedFile": "Archivo seleccionado",
-    "continue": "Continuar"
+    "continue": "Continuar",
+    "reset": "Reiniciar",
+    "search": "Buscar",
+    "goBack": "Retroceder",
+
+    "copy": "Copiar"
   },
   "menu": {
     "settings": "Configuración",
@@ -13,6 +18,7 @@
   },
   "routes": {
     "home": "Inicio",
+    "library": "Libreria",
     "about": "Acerca de",
     "settings": "Configuración"
   },
@@ -23,8 +29,18 @@
     "errorsFound": "Se encontró un total de {count} error | Se encontraron un total de {count} errores",
     "viewErrors": "Ver errores",
     "jobResult": "Resultado de operación",
-    "savedBooks": "Se guardó un total de {count} libro | Se guardo un total de {count} libros",
-    "noNewBooksSaved": "No se encontraron libros nuevos durante el proceso"
+    "savedBooks": "Se guardo un total de {count} libro | Se guardo un total de {count} libros",
+    "noNewBooksSaved": "No se encontraron libros nuevos durante el proceso",
+    "savedHighlights": "Se guardo un total de {count} cita | Se guardo un total de {count} citas",
+    "noNewHighlightsSaved": "No se encontraron nuevas citas durante el proceso"
+  },
+  "library": {
+    "myBooks": "Mis Libros",
+    "unknownAuthor": "Autor desconocido",
+    "emptyBooksTable": "Ups! No se encontraron libros guardados, intenta cargarlos desde la sección inicio."
+  },
+  "highlights": {
+    "highlights": "Citas"
   },
   "settings": {
     "appLanguage": "Idioma de la Aplicación"

@@ -39,5 +39,7 @@ contextBridge.exposeInMainWorld('api', {
     create: (data: any) => ipcRenderer.invoke('highlights:create', data),
     update: (id: number, data: any) => ipcRenderer.invoke('highlights:update', id, data),
     delete: (id: number) => ipcRenderer.invoke('highlights:delete', id),
+    exists: (bookId: number, content: string) =>
+      ipcRenderer.invoke('highlights:exists', bookId, content),
   },
 });

@@ -11,7 +11,7 @@ const { t } = useI18n();
 const router = useRouter();
 const sidebarOpen = ref(true);
 
-const routes = AppRoutes.map((r) => ({
+const routes = AppRoutes.filter((r) => r.visibleOnSidebar).map((r) => ({
   id: r.name,
   labelKey: r.labelKey,
   icon: r.icon,

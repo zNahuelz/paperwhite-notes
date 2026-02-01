@@ -5,6 +5,7 @@ import es from './es.json';
 const savedLang = localStorage.getItem('appLang') ?? 'es';
 
 export const i18n = createI18n({
+  legacy: false,
   locale: savedLang,
   fallbackLocale: 'en',
   messages: { en, es },

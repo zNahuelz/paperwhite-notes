@@ -81,6 +81,9 @@ function registerIpcHandlers() {
     HighlightRepository.update(id, payload)
   );
   ipcMain.handle('highlights:delete', (_, id: number) => HighlightRepository.softDelete(id));
+  ipcMain.handle('highlights:exists', (_, bookId: number, content: string) =>
+    HighlightRepository.highlightExists(bookId, content)
+  );
 }
 
 // Quit when all windows are closed, except on macOS. There, it's common

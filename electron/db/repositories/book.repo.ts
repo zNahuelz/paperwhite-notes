@@ -8,6 +8,7 @@ function mapRowToBook(row: any): Book {
     author: row.author,
     description: row.description ?? undefined,
     cover: row.cover ?? undefined,
+    highlightsAmount: row.highlightsAmount ?? 0,
     createdAt: new Date(row.created_at),
     updatedAt: row.updated_at ? new Date(row.updated_at) : new Date(row.created_at),
     isDeleted: Boolean(row.is_deleted),
@@ -28,13 +29,7 @@ export class BookRepository {
 
   static findById(id: number): Book | null {
     const row = getDatabase()
-      .prepare(
-        `
-        SELECT *
-        FROM books
-        WHERE id = ? AND is_deleted = 0
-      `
-      )
+      .prepare(`SELECT * FROM books WHERE id = ? AND is_deleted = 0`)
       .get(id);
 
     return row ? mapRowToBook(row) : null;
@@ -50,12 +45,11 @@ export class BookRepository {
   static findAll(): Book[] {
     return getDatabase()
       .prepare(
-        `
-        SELECT *
-        FROM books
-        WHERE is_deleted = 0
-        ORDER BY created_at DESC
-      `
+        `SELECT b.*, COUNT(h.id) AS highlightsAmount FROM books b 
+        LEFT JOIN highlights h ON h.book_id = b.id 
+        AND h.is_deleted = 0 
+        WHERE b.is_deleted = 0 
+        GROUP BY b.id ORDER BY b.created_at DESC`
       )
       .all()
       .map(mapRowToBook);
@@ -87,13 +81,7 @@ export class BookRepository {
     values.push(id);
 
     getDatabase()
-      .prepare(
-        `
-        UPDATE books
-        SET ${fields.join(', ')}
-        WHERE id = ? AND is_deleted = 0
-      `
-      )
+      .prepare(`UPDATE books SET ${fields.join(', ')} WHERE id = ? AND is_deleted = 0`)
       .run(...values);
 
     return this.findById(id);
@@ -101,13 +89,7 @@ export class BookRepository {
 
   static softDelete(id: number): boolean {
     const result = getDatabase()
-      .prepare(
-        `
-        UPDATE books
-        SET is_deleted = 1, updated_at = ?
-        WHERE id = ?
-      `
-      )
+      .prepare(`UPDATE books SET is_deleted = 1, updated_at = ? WHERE id = ?`)
       .run(new Date().toISOString(), id);
 
     return result.changes > 0;
