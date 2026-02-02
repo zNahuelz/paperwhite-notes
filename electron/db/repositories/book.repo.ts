@@ -66,6 +66,10 @@ export class BookRepository {
       fields.push('title = ?');
       values.push(data.title);
     }
+    if (data.author !== undefined) {
+      fields.push('author = ?');
+      values.push(data.author);
+    }
     if (data.description !== undefined) {
       fields.push('description = ?');
       values.push(data.description);

@@ -45,7 +45,15 @@ onMounted(() => loadBookDetails());
     <BaseLoading></BaseLoading>
   </div>
   <div v-else class="p-4 m-4">
-    <h1 class="text-3xl font-semibold">{{ t('highlights.highlights') }}</h1>
+    <h1 class="text-3xl font-semibold">{{ `${t('highlights.highlights')} - ${book?.title}` }}</h1>
+    <div class="flex flex-col items-start mt-2">
+      <h1 v-if="book?.author !== ''" class="font-light text-xl">
+        {{ `${t('common.author')}: ${book?.author}` }}
+      </h1>
+      <h1 v-if="book?.description !== ''" class="font-light text-lg">
+        {{ `${t('common.description')}: ${book?.description}` }}
+      </h1>
+    </div>
     <div class="divider"></div>
     <div class="flex flex-col items-end mb-5">
       <div class="inline-flex items-center gap-2">

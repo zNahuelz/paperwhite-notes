@@ -1,6 +1,7 @@
 {
   "common": {
     "save": "Guardar",
+    "saving": "Guardando",
     "cancel": "Cancelar",
     "switchTheme": "Cambiar tema",
     "loading": "Cargando",
@@ -9,8 +10,13 @@
     "reset": "Reiniciar",
     "search": "Buscar",
     "goBack": "Retroceder",
-
-    "copy": "Copiar"
+    "copy": "Copiar",
+    "line": "Línea",
+    "title": "Título",
+    "author": "Autor",
+    "description": "Descripción",
+    "coverImage": "Imagen de Portada",
+    "selectImage": "Seleccionar Imagen"
   },
   "menu": {
     "settings": "Configuración",
@@ -32,12 +38,17 @@
     "savedBooks": "Se guardo un total de {count} libro | Se guardo un total de {count} libros",
     "noNewBooksSaved": "No se encontraron libros nuevos durante el proceso",
     "savedHighlights": "Se guardo un total de {count} cita | Se guardo un total de {count} citas",
-    "noNewHighlightsSaved": "No se encontraron nuevas citas durante el proceso"
+    "noNewHighlightsSaved": "No se encontraron nuevas citas durante el proceso",
+    "jobErrors": "Errores de operación",
+    "errorDescription": "Error #{id} \n Línea: {line}"
   },
   "library": {
     "myBooks": "Mis Libros",
     "unknownAuthor": "Autor desconocido",
-    "emptyBooksTable": "Ups! No se encontraron libros guardados, intenta cargarlos desde la sección inicio."
+    "emptyBooksTable": "Ups! No se encontraron libros guardados, intenta cargarlos desde la sección inicio.",
+    "editBook": "Editar libro",
+    "recommendedResolution": "Resolución recomendada: 300px * 300px",
+    "bookUpdated": "Libro actualizado correctamente"
   },
   "highlights": {
     "highlights": "Citas"
@@ -46,9 +57,12 @@
     "appLanguage": "Idioma de la Aplicación"
   },
   "errors": {
+    "error": "Error",
     "notEnoughLines": "Líneas insuficientes para realizar lectura",
     "missingBookName": "Nombre de libro no encontrado",
     "missingLocationMetadata": "Metadatos de ubicación no encontrados",
-    "emptyHighlight": "El marcador o cita está vacío"
+    "emptyHighlight": "El marcador o cita está vacío",
+    "titleRequired": "Debe ingresar un título",
+    "bookSaveFailed": "Ha sucedido un error durante el guardado del libro, intente nuevamente."
   }
 }

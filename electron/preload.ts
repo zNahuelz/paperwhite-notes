@@ -43,3 +43,7 @@ contextBridge.exposeInMainWorld('api', {
       ipcRenderer.invoke('highlights:exists', bookId, content),
   },
 });
+
+contextBridge.exposeInMainWorld('electron', {
+  selectCoverImage: () => ipcRenderer.invoke('selectCoverImage'),
+});

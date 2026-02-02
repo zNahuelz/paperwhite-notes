@@ -10,6 +10,7 @@ export interface ClippingParseError {
   block: string;
   reason: string;
   line?: number;
+  absoluteLine?: number;
 }
 
 export interface ParseResult {
@@ -106,20 +107,44 @@ export function parseClippings(text: string): ParseResult {
     errors: [],
   };
 
-  const blocks = text
-    .split('==========')
-    .map((b) => b.trim())
-    .filter(Boolean);
+  const lines = text.split('\n');
 
-  for (const block of blocks) {
-    const outcome = parseSingleClipping(block);
+  let currentBlock: string[] = [];
+  let blockStartLine = 1;
+
+  function flushBlock() {
+    if (currentBlock.length === 0) return;
+
+    const blockText = currentBlock.join('\n');
+    const outcome = parseSingleClipping(blockText);
 
     if (outcome.ok) {
       result.clippings.push(outcome.data);
     } else {
-      result.errors.push(outcome.error);
+      const errorLine = outcome.error.line;
+
+      result.errors.push({
+        ...outcome.error,
+        absoluteLine: errorLine ? blockStartLine + errorLine - 1 : blockStartLine,
+      });
     }
+
+    currentBlock = [];
   }
+
+  lines.forEach((line, index) => {
+    if (line.trim() === '==========') {
+      flushBlock();
+      blockStartLine = index + 2;
+    } else {
+      if (currentBlock.length === 0) {
+        blockStartLine = index + 1;
+      }
+      currentBlock.push(line);
+    }
+  });
+
+  flushBlock();
 
   return result;
 }

@@ -23,5 +23,8 @@ declare global {
         exists(bookId: number, content: string): Promise<boolean>;
       };
     };
+    electron: {
+      selectCoverImage(): Promise<string | null>;
+    };
   }
 }

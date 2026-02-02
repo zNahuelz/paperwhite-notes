@@ -6,3 +6,7 @@ export const copyToClipboard = async (text: string) => {
     return false;
   }
 };
+
+export const toFileUrl = (path: string) => {
+  return `file://${path.replace(/\\/g, '/')}`;
+};

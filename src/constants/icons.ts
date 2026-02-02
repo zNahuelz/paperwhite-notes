@@ -18,4 +18,6 @@ export const Icons = {
   Check: 'lucide:check',
   Alert: 'lucide:triangle-alert',
   BookAlert: 'lucide:book-alert',
+  Upload: 'lucide:upload',
+  CircleCheck: 'lucide:circle-check-big',
 };

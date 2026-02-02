@@ -1,6 +1,7 @@
 {
   "common": {
     "save": "Save",
+    "saving": "Saving",
     "cancel": "Cancel",
     "switchTheme": "Switch theme",
     "loading": "Loading",
@@ -9,7 +10,13 @@
     "reset": "Reset",
     "search": "Search",
     "goBack": "Go back",
-    "copy": "Copy"
+    "copy": "Copy",
+    "line": "Line",
+    "title": "Title",
+    "author": "Author",
+    "description": "Description",
+    "coverImage": "Cover Image",
+    "selectImage": "Select Image"
   },
   "menu": {
     "settings": "Settings",
@@ -31,12 +38,17 @@
     "savedBooks": "A total of {count} book was saved | A total of {count} books were saved",
     "noNewBooksSaved": "No new books were found during the process",
     "savedHighlights": "A total of {count} highlight was saved | A total of {count} highlights were saved",
-    "noNewHighlightsSaved": "No new highlights were found during the process"
+    "noNewHighlightsSaved": "No new highlights were found during the process",
+    "jobErrors": "Job errors",
+    "errorDescription": "Error #{id} \n Line: {line}"
   },
   "library": {
     "myBooks": "My Books",
     "unknownAuthor": "Unknown author",
-    "emptyBooksTable": "Oops! There's no books saved. Try to load them on the home section."
+    "emptyBooksTable": "Oops! There's no books saved. Try to load them on the home section.",
+    "editBook": "Edit book",
+    "recommendedResolution": "Recommended resolution: 300px * 300px",
+    "bookUpdated": "Book updated successfully"
   },
   "highlights": {
     "highlights": "Highlights"
@@ -45,9 +57,12 @@
     "appLanguage": "App Language"
   },
   "errors": {
-    "notEnoughLines": "Not enough lines to read the file",
+    "error": "Error",
+    "notEnoughLines": "Not enough lines to read",
     "missingBookName": "Missing book name",
     "missingLocationMetadata": "Missing location metadata",
-    "emptyHighlight": "Highlight content is empty"
+    "emptyHighlight": "Highlight content is empty",
+    "titleRequired": "Title is required",
+    "bookSaveFailed": "An error occurred while saving the book, please try again."
   }
 }

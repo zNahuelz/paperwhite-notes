@@ -5,6 +5,9 @@ import path from 'node:path';
 import { initDatabase } from './db';
 import { BookRepository } from './db/repositories/book.repo';
 import { HighlightRepository } from './db/repositories/highlight.repo';
+import { dialog } from 'electron';
+import fs from 'node:fs';
+import crypto from 'node:crypto';
 
 const require = createRequire(import.meta.url);
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
@@ -46,6 +49,7 @@ function createWindow() {
     icon: path.join(process.env.VITE_PUBLIC, 'electron-vite.svg'),
     webPreferences: {
       preload: path.join(__dirname, 'preload.mjs'),
+      webSecurity: false,
     },
   });
 
@@ -84,6 +88,30 @@ function registerIpcHandlers() {
   ipcMain.handle('highlights:exists', (_, bookId: number, content: string) =>
     HighlightRepository.highlightExists(bookId, content)
   );
+
+  const coversDir = path.join(app.getPath('userData'), 'covers');
+
+  if (!fs.existsSync(coversDir)) {
+    fs.mkdirSync(coversDir, { recursive: true });
+  }
+
+  ipcMain.handle('selectCoverImage', async () => {
+    const result = await dialog.showOpenDialog({
+      filters: [{ name: 'Images', extensions: ['png', 'jpg', 'jpeg', 'webp'] }],
+      properties: ['openFile'],
+    });
+
+    if (result.canceled || result.filePaths.length === 0) return null;
+
+    const sourcePath = result.filePaths[0];
+    const ext = path.extname(sourcePath);
+    const randomName = crypto.randomUUID() + ext;
+    const targetPath = path.join(coversDir, randomName);
+
+    fs.copyFileSync(sourcePath, targetPath);
+
+    return targetPath;
+  });
 }
 
 // Quit when all windows are closed, except on macOS. There, it's common

@@ -12,12 +12,14 @@ import {
 } from '@/features/parser';
 import BaseLoading from '@/components/BaseLoading.vue';
 import BaseModal from '@/components/BaseModal.vue';
+import { Icons } from '@/constants/icons.ts';
+import { Icon } from '@iconify/vue';
 
 const { t } = useI18n();
 const file = ref<File | null>(null);
 const isLoading = ref(false);
 const showResultsModal = ref(false);
-// TODO::: const showErrorsModal = ref(false);
+const showErrorsModal = ref(false);
 
 const clippings = ref<Clipping[]>([]);
 const errors = ref<ClippingParseError[]>([]);
@@ -88,13 +90,27 @@ const storeHighlightIfNotExists = async (c: Clipping) => {
   savedHighlights.value += 1;
 };
 
-const handleResultModal = () => {
+const openErrorModal = () => {
+  showResultsModal.value = false;
+  showErrorsModal.value = true;
+};
+
+const handleCloseModal = () => {
   clippings.value = [];
   file.value = null;
   errors.value = [];
   parseResult.value = null;
   savedBooks.value = 0;
   showResultsModal.value = false;
+  showErrorsModal.value = false;
+};
+
+const blockLines = (block: string) => {
+  return block
+    .replace(/\r\n/g, '\n')
+    .replace(/\r/g, '\n')
+    .split('\n')
+    .filter((line) => line.length > 0);
 };
 </script>
 <template>
@@ -112,6 +128,7 @@ const handleResultModal = () => {
     </div>
   </div>
 
+  <!-- Results Modal -->
   <BaseModal
     :open="showResultsModal"
     :title="t('home.jobResult')"
@@ -164,14 +181,57 @@ const handleResultModal = () => {
             class="join-item"
             :label="t('home.viewErrors')"
             color="btn-error"
+            @click="openErrorModal"
           ></BaseButton>
           <BaseButton
             class="join-item"
             :label="t('common.continue')"
-            @click="handleResultModal"
+            @click="handleCloseModal"
           ></BaseButton>
         </div>
       </div>
     </template>
   </BaseModal>
+  <!-- Results Modal -->
+
+  <!-- Errors Modal -->
+  <BaseModal
+    :open="showErrorsModal"
+    :title="t('home.jobErrors')"
+    @close="handleCloseModal"
+    :disableClose="false"
+    width="max-w-5xl"
+  >
+    <div class="grid md:grid-cols-1 grid-cols-1 gap-2 overflow-y-auto max-h-[400px]">
+      <div v-for="(error, index) in errors" :key="index">
+        <div class="collapse collapse-arrow bg-base-100 border-base-300 border">
+          <input type="checkbox" />
+          <div class="collapse-title font-semibold whitespace-pre-line">
+            {{ t('home.errorDescription', { id: index + 1, line: error.absoluteLine }) }}
+          </div>
+          <div class="collapse-content">
+            <div class="inline-flex items-center space-x-2">
+              <Icon :icon="Icons.Alert" class="text-md text-error"></Icon>
+              <span class="font-semibold text-md"
+                >{{ t(error.reason)
+                }}<span v-if="error.line"> ({{ t('common.line') }}: {{ error.line }})</span></span
+              >
+            </div>
+            <div class="mockup-code w-full my-2" v-if="error.line">
+              <!--TODO: Fix... Something weird with css.-->
+              <pre
+                v-for="(blockLine, index) in blockLines(error.block)"
+                :key="index"
+                :data-prefix="index + 1"
+                :class="[index + 1 === error.line ? 'bg-warning text-warning-content' : '']"
+              >
+                <code>{{blockLine}}</code>
+              </pre>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </BaseModal>
+  <!-- Errors Modal -->
 </template>
