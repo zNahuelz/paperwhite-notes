@@ -15,6 +15,7 @@ const props = defineProps<{
 
 const emit = defineEmits<{
   (e: 'edit', book: Book): void;
+  (e: 'delete', book: Book): void;
 }>();
 
 const { t } = useI18n();
@@ -22,6 +23,10 @@ const router = useRouter();
 
 const handleEdit = () => {
   emit('edit', props.book);
+};
+
+const handleDelete = () => {
+  emit('delete', props.book);
 };
 
 const coverSrc = (cover?: string) => {
@@ -51,7 +56,12 @@ const coverSrc = (cover?: string) => {
       >
       <div class="card-actions justify-center mt-auto">
         <div class="join join-vertical md:join-horizontal">
-          <BaseButton class="join-item" :icon="Icons.Trash" color="btn-error"></BaseButton>
+          <BaseButton
+            class="join-item"
+            :icon="book.isDeleted ? Icons.Restore : Icons.Trash"
+            :color="book.isDeleted ? 'btn-warning' : 'btn-error'"
+            @click="handleDelete"
+          ></BaseButton>
           <BaseButton
             class="join-item"
             :icon="Icons.Edit"

@@ -16,7 +16,10 @@
     "author": "Autor",
     "description": "Descripción",
     "coverImage": "Imagen de Portada",
-    "selectImage": "Seleccionar Imagen"
+    "selectImage": "Seleccionar Imagen",
+    "delete": "Eliminar",
+    "deletePermanently": "E. Permanente",
+    "confirm": "Confirmar"
   },
   "menu": {
     "settings": "Configuración",
@@ -45,13 +48,23 @@
   "library": {
     "myBooks": "Mis Libros",
     "unknownAuthor": "Autor desconocido",
-    "emptyBooksTable": "Ups! No se encontraron libros guardados, intenta cargarlos desde la sección inicio.",
+    "emptyBooksTable": "Ups! No se encontraron libros guardados, intenta cargarlos desde la sección inicio",
     "editBook": "Editar libro",
     "recommendedResolution": "Resolución recomendada: 300px * 300px",
-    "bookUpdated": "Libro actualizado correctamente"
+    "bookUpdated": "Libro actualizado correctamente",
+    "loadingBooks": "Cargando libros...",
+    "deleteBook": "Eliminar libro",
+    "bookDeletionAlert": "¿Está seguro de eliminar el siguiente libro? Al eliminarse permanentemente, no podrá ser recuperado (solo cargando My Clippings.txt desde el inicio).",
+    "bookDeleted": "Libro eliminado correctamente"
   },
   "highlights": {
-    "highlights": "Citas"
+    "highlight": "Cita",
+    "highlights": "Citas",
+    "highlightUpdated": "Cita actualizada correctamente",
+    "editHighlight": "Editar cita",
+    "loadingHighlights": "Cargando citas...",
+    "highlightDeletionAlert": "¿Está seguro de eliminar la siguiente cita? Al eliminarse permanentemente, no podrá ser recuperada (solo cargando My Clippings.txt desde el inicio).",
+    "highlightDeleted": "Cita eliminada correctamente"
   },
   "settings": {
     "appLanguage": "Idioma de la Aplicación"
@@ -63,6 +76,12 @@
     "missingLocationMetadata": "Metadatos de ubicación no encontrados",
     "emptyHighlight": "El marcador o cita está vacío",
     "titleRequired": "Debe ingresar un título",
-    "bookSaveFailed": "Ha sucedido un error durante el guardado del libro, intente nuevamente."
+    "bookSaveFailed": "Ha sucedido un error durante el guardado del libro, intente nuevamente",
+    "loadBooksFailed": "Ha sucedido un error durante la carga de libros. Detalles: {error}",
+    "contentRequired": "Debe ingresar contenido para la cita",
+    "highlightSaveFailed": "Ha sucedido un error durante el guardado de la cita, intente nuevamente",
+    "loadHighlightsFailed": "Ha sucedido un error durante la carga de citas. Detalles: {error}",
+    "bookDeleteFailed": "Ha sucedido un error durante la eliminación del libro, intente nuevamente. Detalles: {error}",
+    "highlightDeleteFailed": "Ha sucedido un error durante la eliminación de la cita, intente nuevamente. Detalles: {error}"
   }
 }

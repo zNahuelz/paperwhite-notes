@@ -16,7 +16,10 @@
     "author": "Author",
     "description": "Description",
     "coverImage": "Cover Image",
-    "selectImage": "Select Image"
+    "selectImage": "Select Image",
+    "delete": "Delete",
+    "deletePermanently": "D. Permanently",
+    "confirm": "Confirm"
   },
   "menu": {
     "settings": "Settings",
@@ -48,10 +51,20 @@
     "emptyBooksTable": "Oops! There's no books saved. Try to load them on the home section.",
     "editBook": "Edit book",
     "recommendedResolution": "Recommended resolution: 300px * 300px",
-    "bookUpdated": "Book updated successfully"
+    "bookUpdated": "Book successfully updated",
+    "loadingBooks": "Loading books...",
+    "deleteBook": "Delete book",
+    "bookDeletionAlert": "Are you sure you want to delete the following book? Once permanently deleted, it cannot be recovered (except by loading My Clippings.txt from the home area).",
+    "bookDeleted": "Book successfully deleted"
   },
   "highlights": {
-    "highlights": "Highlights"
+    "highlight": "Highlight / Quote",
+    "highlights": "Highlights",
+    "highlightUpdated": "Highlight successfully updated",
+    "editHighlight": "Edit highlight",
+    "loadingHighlights": "Loading highlights...",
+    "highlightDeletionAlert": "Are you sure you want to delete the following highlight / quote? Once permanently deleted, it cannot be recovered (except by loading My Clippings.txt from the home area).",
+    "highlightDeleted": "Highlight / quote successfully deleted"
   },
   "settings": {
     "appLanguage": "App Language"
@@ -63,6 +76,12 @@
     "missingLocationMetadata": "Missing location metadata",
     "emptyHighlight": "Highlight content is empty",
     "titleRequired": "Title is required",
-    "bookSaveFailed": "An error occurred while saving the book, please try again."
+    "bookSaveFailed": "An error occurred while saving the book, please try again",
+    "loadBooksFailed": "An error occurred while loading books. Details: {error}",
+    "contentRequired": "Highlight content is required",
+    "highlightSaveFailed": "An error occurred while saving the highlight, please try again",
+    "loadHighlightsFailed": "An error occurred while loading highlights. Details: {error}",
+    "bookDeleteFailed": "An error occurred while deleting the book, please try again. Details: {error}",
+    "highlightDeleteFailed": "An error occurred while deleting the highlight / quote, please try again. Details: {error}"
   }
 }

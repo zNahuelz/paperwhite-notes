@@ -20,4 +20,9 @@ export const Icons = {
   BookAlert: 'lucide:book-alert',
   Upload: 'lucide:upload',
   CircleCheck: 'lucide:circle-check-big',
+  Location: 'lucide:text-search',
+  Book: 'lucide:book-a',
+  BookDashed: 'lucide:book-dashed',
+  BookCheck: 'lucide:book-check',
+  Restore: 'lucide:database-backup',
 };

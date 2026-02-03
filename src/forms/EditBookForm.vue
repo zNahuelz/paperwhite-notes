@@ -81,7 +81,7 @@ const onSubmit = async () => {
     isSubmitting.value = true;
     await window.api.books.update(props.bookId, { ...form });
     bookSaved.value = true;
-    await new Promise((resolve) => setTimeout(resolve, 1800));
+    await new Promise((resolve) => setTimeout(resolve, 1200));
 
     window.location.reload();
   } catch (error) {

@@ -18,27 +18,29 @@ contextBridge.exposeInMainWorld('ipcRenderer', {
     const [channel, ...omit] = args;
     return ipcRenderer.invoke(channel, ...omit);
   },
-
-  // You can expose other APTs you need here.
-  // ...
 });
 
 contextBridge.exposeInMainWorld('api', {
   books: {
-    list: () => ipcRenderer.invoke('books:list'),
+    list: (showDeleted: boolean = false) => ipcRenderer.invoke('books:list', showDeleted),
     get: (id: number) => ipcRenderer.invoke('books:get', id),
     byTitle: (title: string) => ipcRenderer.invoke('books:byTitle', title),
     create: (data: any) => ipcRenderer.invoke('books:create', data),
     update: (id: number, data: any) => ipcRenderer.invoke('books:update', id, data),
-    delete: (id: number) => ipcRenderer.invoke('books:delete', id),
+    softDelete: (id: number) => ipcRenderer.invoke('books:softDelete', id),
+    hardDelete: (id: number) => ipcRenderer.invoke('books:hardDelete', id),
+    restore: (id: number) => ipcRenderer.invoke('books:restore', id),
   },
 
   highlights: {
-    byBook: (bookId: number) => ipcRenderer.invoke('highlights:byBook', bookId),
+    byBook: (bookId: number, showDeleted: boolean = false) =>
+      ipcRenderer.invoke('highlights:byBook', bookId, showDeleted),
     byContent: (content: string) => ipcRenderer.invoke('highlights:byContent', content),
     create: (data: any) => ipcRenderer.invoke('highlights:create', data),
     update: (id: number, data: any) => ipcRenderer.invoke('highlights:update', id, data),
-    delete: (id: number) => ipcRenderer.invoke('highlights:delete', id),
+    softDelete: (id: number) => ipcRenderer.invoke('highlights:softDelete', id),
+    hardDelete: (id: number) => ipcRenderer.invoke('highlights:hardDelete', id),
+    restore: (id: number) => ipcRenderer.invoke('highlights:restore', id),
     exists: (bookId: number, content: string) =>
       ipcRenderer.invoke('highlights:exists', bookId, content),
   },

@@ -1,3 +1,5 @@
+// noinspection SqlNoDataSourceInspection
+
 import { getDatabase } from '../index';
 import { Book } from '../types/book';
 
@@ -42,16 +44,17 @@ export class BookRepository {
     return row ? mapRowToBook(row) : null;
   }
 
-  static findAll(): Book[] {
+  static findAll(showDeleted: boolean = false): Book[] {
+    const deletedBit = showDeleted ? 1 : 0;
     return getDatabase()
       .prepare(
         `SELECT b.*, COUNT(h.id) AS highlightsAmount FROM books b 
         LEFT JOIN highlights h ON h.book_id = b.id 
         AND h.is_deleted = 0 
-        WHERE b.is_deleted = 0 
+        WHERE (b.is_deleted = 0 OR ? = 1)
         GROUP BY b.id ORDER BY b.created_at DESC`
       )
-      .all()
+      .all(deletedBit)
       .map(mapRowToBook);
   }
 
@@ -96,6 +99,18 @@ export class BookRepository {
       .prepare(`UPDATE books SET is_deleted = 1, updated_at = ? WHERE id = ?`)
       .run(new Date().toISOString(), id);
 
+    return result.changes > 0;
+  }
+
+  static restore(id: number): boolean {
+    const result = getDatabase()
+      .prepare(`UPDATE books SET is_deleted = 0, updated_at = ? WHERE id = ?`)
+      .run(new Date().toISOString(), id);
+    return result.changes > 0;
+  }
+
+  static hardDelete(id: number): boolean {
+    const result = getDatabase().prepare(`DELETE FROM books WHERE id = ?`).run(id);
     return result.changes > 0;
   }
 }

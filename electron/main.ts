@@ -67,15 +67,19 @@ function createWindow() {
 }
 
 function registerIpcHandlers() {
-  ipcMain.handle('books:list', () => BookRepository.findAll());
+  ipcMain.handle('books:list', (_, showDeleted: boolean = false) =>
+    BookRepository.findAll(showDeleted)
+  );
   ipcMain.handle('books:get', (_, id: number) => BookRepository.findById(id));
   ipcMain.handle('books:byTitle', (_, title: string) => BookRepository.findByTitle(title));
   ipcMain.handle('books:create', (_, payload) => BookRepository.create(payload));
   ipcMain.handle('books:update', (_, id: number, payload) => BookRepository.update(id, payload));
-  ipcMain.handle('books:delete', (_, id: number) => BookRepository.softDelete(id));
+  ipcMain.handle('books:softDelete', (_, id: number) => BookRepository.softDelete(id));
+  ipcMain.handle('books:hardDelete', (_, id: number) => BookRepository.hardDelete(id));
+  ipcMain.handle('books:restore', (_, id: number) => BookRepository.restore(id));
 
-  ipcMain.handle('highlights:byBook', (_, bookId: number) =>
-    HighlightRepository.findByBook(bookId)
+  ipcMain.handle('highlights:byBook', (_, bookId: number, showDeleted: boolean = false) =>
+    HighlightRepository.findByBook(bookId, showDeleted)
   );
   ipcMain.handle('highlights:byContent', (_, content: string) =>
     HighlightRepository.findByContent(content)
@@ -84,7 +88,9 @@ function registerIpcHandlers() {
   ipcMain.handle('highlights:update', (_, id: number, payload) =>
     HighlightRepository.update(id, payload)
   );
-  ipcMain.handle('highlights:delete', (_, id: number) => HighlightRepository.softDelete(id));
+  ipcMain.handle('highlights:softDelete', (_, id: number) => HighlightRepository.softDelete(id));
+  ipcMain.handle('highlights:hardDelete', (_, id: number) => HighlightRepository.hardDelete(id));
+  ipcMain.handle('highlights:restore', (_, id: number) => HighlightRepository.restore(id));
   ipcMain.handle('highlights:exists', (_, bookId: number, content: string) =>
     HighlightRepository.highlightExists(bookId, content)
   );

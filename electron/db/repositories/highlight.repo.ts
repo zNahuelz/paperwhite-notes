@@ -1,3 +1,5 @@
+// noinspection SqlNoDataSourceInspection
+
 import { getDatabase } from '..';
 import { Highlight } from '../types/highlight';
 
@@ -41,10 +43,11 @@ export class HighlightRepository {
     return row ? mapRowToHighlight(row) : null;
   }
 
-  static findByBook(bookId: number): Highlight[] {
+  static findByBook(bookId: number, showDeleted: boolean = false): Highlight[] {
+    const deletedBit = showDeleted ? 1 : 0;
     return getDatabase()
-      .prepare(`SELECT *FROM highlights WHERE book_id = ? AND is_deleted = 0 ORDER BY date DESC`)
-      .all(bookId)
+      .prepare(`SELECT * FROM highlights WHERE book_id = ? AND is_deleted <= ? ORDER BY date DESC`)
+      .all(bookId, deletedBit)
       .map(mapRowToHighlight);
   }
 
@@ -85,6 +88,18 @@ export class HighlightRepository {
       .prepare(`UPDATE highlights SET is_deleted = 1, updated_at = ? WHERE id = ?`)
       .run(new Date().toISOString(), id);
 
+    return result.changes > 0;
+  }
+
+  static restore(id: number): boolean {
+    const result = getDatabase()
+      .prepare(`UPDATE highlights SET is_deleted = 0, updated_at = ? WHERE id = ?`)
+      .run(new Date().toISOString(), id);
+    return result.changes > 0;
+  }
+
+  static hardDelete(id: number): boolean {
+    const result = getDatabase().prepare(`DELETE FROM highlights WHERE id = ?`).run(id);
     return result.changes > 0;
   }
 
