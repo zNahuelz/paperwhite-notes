@@ -3,7 +3,7 @@
     "save": "Save",
     "saving": "Saving",
     "cancel": "Cancel",
-    "switchTheme": "Switch theme",
+    "switchTheme": "Switch Theme",
     "loading": "Loading",
     "selectedFile": "Selected file",
     "continue": "Continue",
@@ -18,8 +18,11 @@
     "coverImage": "Cover Image",
     "selectImage": "Select Image",
     "delete": "Delete",
-    "deletePermanently": "D. Permanently",
-    "confirm": "Confirm"
+    "deletePermanently": "Delete Forever",
+    "confirm": "Confirm",
+    "restore": "Restore",
+    "entitiesVisibility": "Include deleted",
+    "cleanCovers": "Delete Unused Covers"
   },
   "menu": {
     "settings": "Settings",
@@ -55,7 +58,10 @@
     "loadingBooks": "Loading books...",
     "deleteBook": "Delete book",
     "bookDeletionAlert": "Are you sure you want to delete the following book? Once permanently deleted, it cannot be recovered (except by loading My Clippings.txt from the home area).",
-    "bookDeleted": "Book successfully deleted"
+    "bookDeleted": "Book successfully deleted",
+    "bookRestorationAlert": "Are you sure you want to restore the following book?",
+    "bookRestored": "Book successfully restored",
+    "restoreBook": "Restore book"
   },
   "highlights": {
     "highlight": "Highlight / Quote",
@@ -64,10 +70,20 @@
     "editHighlight": "Edit highlight",
     "loadingHighlights": "Loading highlights...",
     "highlightDeletionAlert": "Are you sure you want to delete the following highlight / quote? Once permanently deleted, it cannot be recovered (except by loading My Clippings.txt from the home area).",
-    "highlightDeleted": "Highlight / quote successfully deleted"
+    "highlightDeleted": "Highlight / quote successfully deleted",
+    "highlightRestorationAlert": "Are you sure you want to restore the following highlight / quote?",
+    "highlightRestored": "Highlight / quote successfully restored",
+    "deleteHighlight": "Delete highlight",
+    "restoreHighlight": "Restore highlight"
   },
   "settings": {
-    "appLanguage": "App Language"
+    "appLanguage": "App Language",
+    "dbPath": "Database Path",
+    "coversPath": "Book Covers Path",
+    "openExplorer": "Open file explorer",
+    "cleanUnusedCoversAlert": "You are about to delete unused book covers; this action cannot be reversed. WARNING: This action will delete all unused files inside the covers directory. Do you wish to continue?",
+    "coverCleanupCompleted": "A total of {count} unused book cover was removed | A total of {count} unused book covers were removed",
+    "unusedCoversCleanup": "Unused book covers cleanup"
   },
   "errors": {
     "error": "Error",
@@ -82,6 +98,9 @@
     "highlightSaveFailed": "An error occurred while saving the highlight, please try again",
     "loadHighlightsFailed": "An error occurred while loading highlights. Details: {error}",
     "bookDeleteFailed": "An error occurred while deleting the book, please try again. Details: {error}",
-    "highlightDeleteFailed": "An error occurred while deleting the highlight / quote, please try again. Details: {error}"
+    "highlightDeleteFailed": "An error occurred while deleting the highlight / quote, please try again. Details: {error}",
+    "bookRestoreFailed": "An error occurred while restoring the book, please try again. Details: {error}",
+    "highlightRestoreFailed": "An error occurred while restoring the highlight / quote, please try again. Details: {error}",
+    "coverCleanupFailed": "An error occurred while deleting unused book covers, please try again. Details: {error}"
   }
 }

@@ -14,6 +14,7 @@ const props = defineProps<{
 const emit = defineEmits<{
   (e: 'edit', highlight: Highlight): void;
   (e: 'delete', highlight: Highlight): void;
+  (e: 'restore', highlight: Highlight): void;
 }>();
 
 const { t } = useI18n();
@@ -37,6 +38,10 @@ const handleEdit = () => {
 
 const handleDelete = () => {
   emit('delete', props.highlight);
+};
+
+const handleRestore = () => {
+  emit('restore', props.highlight);
 };
 
 const handleIcon = computed(() =>
@@ -65,7 +70,7 @@ const handleIcon = computed(() =>
             class="join-item btn-sm"
             :color="highlight.isDeleted ? 'btn-warning' : 'btn-error'"
             :icon="highlight.isDeleted ? Icons.Restore : Icons.Trash"
-            @click="handleDelete"
+            @click="highlight.isDeleted ? handleRestore() : handleDelete()"
           ></BaseButton>
           <BaseButton
             class="join-item btn-sm"

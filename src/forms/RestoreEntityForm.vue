@@ -1,18 +1,16 @@
 <script setup lang="ts">
+import { useI18n } from 'vue-i18n';
+import { ref } from 'vue';
 import { Book } from '../../electron/db/types/book.ts';
 import { Highlight } from '../../electron/db/types/highlight.ts';
 import { Icons } from '@/constants/icons.ts';
-import { Icon } from '@iconify/vue';
 import BaseButton from '@/components/BaseButton.vue';
-import { useI18n } from 'vue-i18n';
-import { ref } from 'vue';
+import { Icon } from '@iconify/vue';
 
 const { t } = useI18n();
-const showConfirmation = ref(false);
-const deletionType = ref<'soft' | 'hard'>('soft');
-const isDeleting = ref(false);
+const isRestoring = ref(false);
 const errorMessage = ref('');
-const entityDeleted = ref(false);
+const entityRestored = ref(false);
 
 const props = defineProps<{
   id?: number;
@@ -28,35 +26,30 @@ const handleClose = () => {
   emit('close');
 };
 
-const handleDeletion = (type: 'soft' | 'hard') => {
-  showConfirmation.value = true;
-  deletionType.value = type;
-};
+const restoreEntity = async () => {
+  isRestoring.value = true;
+  type RestoreApi = {
+    restore: (id: number) => Promise<boolean>;
+  };
 
-const deleteEntity = async () => {
-  isDeleting.value = true;
-  type DeleteFn = (id: number) => Promise<boolean>;
-
-  const apiMap: Record<string, { softDelete: DeleteFn; hardDelete: DeleteFn }> = {
+  const apiMap: Record<'BOOK' | 'HIGHLIGHT', RestoreApi> = {
     BOOK: window.api.books,
     HIGHLIGHT: window.api.highlights,
   };
 
-  const targetApi = apiMap[props.type];
-  const method = deletionType.value === 'soft' ? 'softDelete' : 'hardDelete';
-
   try {
     const id = Number(props.id);
+    const targetApi = apiMap[props.type];
 
-    await targetApi[method](id);
+    await targetApi.restore(id);
 
-    entityDeleted.value = true;
+    entityRestored.value = true;
     await new Promise((resolve) => setTimeout(resolve, 1200));
     window.location.reload();
   } catch (error: any) {
     const isBook = props.type === 'BOOK';
     const message = error?.message ?? String(error);
-    const translationKey = isBook ? 'errors.bookDeleteFailed' : 'errors.highlightDeleteFailed';
+    const translationKey = isBook ? 'errors.bookRestoreFailed' : 'errors.highlightRestoreFailed';
 
     errorMessage.value = t(translationKey, { error: message });
   }
@@ -64,15 +57,17 @@ const deleteEntity = async () => {
 </script>
 <template>
   <div class="flex flex-col items-center">
-    <h1 class="text-center font-light text-lg" v-if="!entityDeleted">
+    <h1 class="text-center font-light text-lg" v-if="!entityRestored">
       {{
-        type === 'BOOK' ? t('library.bookDeletionAlert') : t('highlights.highlightDeletionAlert')
+        type === 'BOOK'
+          ? t('library.bookRestorationAlert')
+          : t('highlights.highlightRestorationAlert')
       }}
     </h1>
 
     <div
       class="flex flex-col items-start"
-      v-if="type === 'BOOK' && errorMessage === '' && !entityDeleted"
+      v-if="type === 'BOOK' && errorMessage === '' && !entityRestored"
     >
       <div class="inline-flex items-center gap-2 mt-4">
         <Icon :icon="Icons.Book" class="text-lg"></Icon>
@@ -86,7 +81,7 @@ const deleteEntity = async () => {
 
     <div
       class="flex flex-col items-start"
-      v-if="type === 'HIGHLIGHT' && errorMessage === '' && !entityDeleted"
+      v-if="type === 'HIGHLIGHT' && errorMessage === '' && !entityRestored"
     >
       <div class="inline-flex items-center gap-2 mt-4">
         <Icon :icon="Icons.Book" class="text-lg"></Icon>
@@ -94,10 +89,10 @@ const deleteEntity = async () => {
       </div>
     </div>
 
-    <div v-if="entityDeleted" class="flex flex-col items-center">
+    <div v-if="entityRestored" class="flex flex-col items-center">
       <Icon :icon="Icons.CircleCheck" class="text-success text-[100px]"></Icon>
       <span class="font-light text-2xl">{{
-        type === 'BOOK' ? t('library.bookDeleted') : t('highlights.highlightDeleted')
+        type === 'BOOK' ? t('library.bookRestored') : t('highlights.highlightRestored')
       }}</span>
     </div>
 
@@ -106,44 +101,20 @@ const deleteEntity = async () => {
       <span class="font-light text-2xl">{{ errorMessage }}</span>
     </div>
 
-    <div class="join join-vertical md:join-horizontal mt-4" v-if="!showConfirmation">
+    <div class="join join-vertical md:join-horizontal mt-4">
       <BaseButton
         class="join-item"
         color="btn-secondary"
         :label="t('common.cancel')"
         @click="handleClose"
-        :disabled="isDeleting"
-      />
-      <BaseButton
-        class="join-item"
-        color="btn-error"
-        :label="t('common.deletePermanently')"
-        @click="handleDeletion('hard')"
+        :disabled="isRestoring"
       />
       <BaseButton
         class="join-item"
         color="btn-primary"
-        :label="t('common.delete')"
-        @click="handleDeletion('soft')"
-      />
-    </div>
-    <div
-      class="join join-vertical md:join-horizontal mt-4"
-      v-if="showConfirmation && !entityDeleted"
-    >
-      <BaseButton
-        class="join-item"
-        color="btn-secondary"
-        :label="t('common.cancel')"
-        @click="handleClose"
-        :disabled="isDeleting"
-      />
-      <BaseButton
-        class="join-item"
-        color="btn-primary"
-        :label="t('common.confirm')"
-        @click="deleteEntity"
-        :disabled="isDeleting || errorMessage !== ''"
+        :label="t('common.restore')"
+        @click="restoreEntity"
+        :disabled="isRestoring || errorMessage !== ''"
       />
     </div>
   </div>

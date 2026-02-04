@@ -47,6 +47,10 @@
       {
         "from": "electron/db/schema",
         "to": "schema"
+      },
+      {
+        "from": "public",
+        "to": "public"
       }
     ]
   }

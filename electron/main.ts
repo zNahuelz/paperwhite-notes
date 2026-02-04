@@ -1,4 +1,4 @@
-import { app, BrowserWindow, globalShortcut, ipcMain, Menu } from 'electron';
+import { app, BrowserWindow, globalShortcut, ipcMain, Menu, shell } from 'electron';
 import { createRequire } from 'node:module';
 import { fileURLToPath } from 'node:url';
 import path from 'node:path';
@@ -39,14 +39,20 @@ process.env.VITE_PUBLIC = VITE_DEV_SERVER_URL
 
 let win: BrowserWindow | null;
 
+function getIconPath() {
+  return app.isPackaged
+    ? path.join(process.resourcesPath, 'public/icon.png')
+    : path.join(__dirname, '../public/icon.png');
+}
+
 function createWindow() {
   win = new BrowserWindow({
     minWidth: 1200,
     minHeight: 800,
     width: 1200,
     height: 800,
-    title: 'PaperWhite Notes v0.1',
-    icon: path.join(process.env.VITE_PUBLIC, 'electron-vite.svg'),
+    title: 'PaperWhite Notes',
+    icon: getIconPath(),
     webPreferences: {
       preload: path.join(__dirname, 'preload.mjs'),
       webSecurity: false,
@@ -95,11 +101,67 @@ function registerIpcHandlers() {
     HighlightRepository.highlightExists(bookId, content)
   );
 
+  ipcMain.handle('openExternalUrl', async (_, url: string) => {
+    if (!/^https?:\/\//.test(url)) {
+      throw new Error('Invalid URL');
+    }
+
+    await shell.openExternal(url);
+  });
+
+  const dbPath = path.join(app.getPath('userData'), 'paperwhite-notes.db');
   const coversDir = path.join(app.getPath('userData'), 'covers');
 
   if (!fs.existsSync(coversDir)) {
     fs.mkdirSync(coversDir, { recursive: true });
   }
+
+  ipcMain.handle('getDatabasePath', () => {
+    return dbPath;
+  });
+
+  ipcMain.handle('openDatabaseFolder', async () => {
+    await shell.showItemInFolder(dbPath);
+  });
+
+  ipcMain.handle('getCoversPath', () => {
+    return coversDir;
+  });
+
+  ipcMain.handle('openCoversFolder', async () => {
+    await shell.openPath(coversDir);
+  });
+
+  ipcMain.handle('cleanupCovers', async () => {
+    const coversDir = path.join(app.getPath('userData'), 'covers');
+
+    if (!fs.existsSync(coversDir)) return 0;
+
+    const books = BookRepository.findAll(true);
+    const usedCovers = new Set(
+      books
+        .map((book) => book.cover)
+        .filter((cover): cover is string => !!cover)
+        .map((coverPath) => path.basename(coverPath))
+    );
+
+    const filesOnDisk = fs.readdirSync(coversDir);
+    let deletedCount = 0;
+
+    for (const file of filesOnDisk) {
+      if (!usedCovers.has(file)) {
+        try {
+          const filePath = path.join(coversDir, file);
+          fs.unlinkSync(filePath);
+          deletedCount++;
+        } catch (err) {
+          console.error(`Failed to delete ${file}:`, err);
+        }
+      }
+    }
+
+    return deletedCount;
+  });
 
   ipcMain.handle('selectCoverImage', async () => {
     const result = await dialog.showOpenDialog({

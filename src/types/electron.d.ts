@@ -29,6 +29,12 @@ declare global {
     };
     electron: {
       selectCoverImage(): Promise<string | null>;
+      openExternalUrl: (url: string) => Promise<void>;
+      getDatabasePath: () => Promise<string>;
+      openDatabaseFolder: () => Promise<void>;
+      getCoversPath: () => Promise<string>;
+      openCoversFolder: () => Promise<void>;
+      cleanupCovers: () => Promise<number>;
     };
   }
 }

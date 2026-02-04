@@ -16,6 +16,7 @@ const props = defineProps<{
 const emit = defineEmits<{
   (e: 'edit', book: Book): void;
   (e: 'delete', book: Book): void;
+  (e: 'restore', book: Book): void;
 }>();
 
 const { t } = useI18n();
@@ -27,6 +28,10 @@ const handleEdit = () => {
 
 const handleDelete = () => {
   emit('delete', props.book);
+};
+
+const handleRestore = () => {
+  emit('restore', props.book);
 };
 
 const coverSrc = (cover?: string) => {
@@ -60,7 +65,7 @@ const coverSrc = (cover?: string) => {
             class="join-item"
             :icon="book.isDeleted ? Icons.Restore : Icons.Trash"
             :color="book.isDeleted ? 'btn-warning' : 'btn-error'"
-            @click="handleDelete"
+            @click="book.isDeleted ? handleRestore() : handleDelete()"
           ></BaseButton>
           <BaseButton
             class="join-item"

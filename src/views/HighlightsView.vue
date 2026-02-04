@@ -2,7 +2,7 @@
 import { Book } from 'electron/db/types/book';
 import { useI18n } from 'vue-i18n';
 import { useRoute, useRouter } from 'vue-router';
-import { ref, onMounted, computed, watch } from 'vue';
+import { ref, computed, watch } from 'vue';
 import { Highlight } from 'electron/db/types/highlight';
 import BaseLoading from '@/components/BaseLoading.vue';
 import HighlightCard from '@/components/HighlightCard.vue';
@@ -13,6 +13,7 @@ import BaseModal from '@/components/BaseModal.vue';
 import EditHighlightForm from '@/forms/EditHighlightForm.vue';
 import { Icon } from '@iconify/vue';
 import DeleteEntityForm from '@/forms/DeleteEntityForm.vue';
+import RestoreEntityForm from '@/forms/RestoreEntityForm.vue';
 
 const { t } = useI18n();
 const router = useRouter();
@@ -27,6 +28,7 @@ const showEditModal = ref(false);
 const selectedHighlight = ref<Highlight | undefined>(undefined);
 const errorMessage = ref('');
 const showDeleteModal = ref(false);
+const showRestoreModal = ref(false);
 
 const includeDeleted = ref(false);
 
@@ -70,6 +72,16 @@ const openDeleteModal = (highlight: Highlight) => {
 const closeDeleteModal = () => {
   selectedHighlight.value = undefined;
   showDeleteModal.value = false;
+};
+
+const openRestoreModal = (highlight: Highlight) => {
+  selectedHighlight.value = highlight;
+  showRestoreModal.value = true;
+};
+
+const closeRestoreModal = () => {
+  selectedHighlight.value = undefined;
+  showRestoreModal.value = false;
 };
 
 watch(
@@ -125,13 +137,13 @@ watch(
             @click="() => router.push({ name: 'library' })"
           ></BaseButton>
         </div>
-
-        <!-- TODO: Modify css or change input type. -->
-        <label class="toggle toggle-xl text-base-content">
-          <input type="checkbox" v-model="includeDeleted" />
-          <Icon :icon="Icons.BookCheck" aria-label="enabled"></Icon>
-          <Icon :icon="Icons.BookDashed" aria-label="disabled"></Icon>
-        </label>
+        <input
+          type="checkbox"
+          class="checkbox checkbox-primary checkbox-xl"
+          v-model="includeDeleted"
+          :title="t('common.entitiesVisibility').toUpperCase()"
+        />
+        <Icon :icon="!includeDeleted ? Icons.BookCheck : Icons.BookDashed" class="text-xl"></Icon>
       </div>
     </div>
     <div
@@ -144,6 +156,7 @@ watch(
           :key="quote.id"
           @edit="openEditForm"
           @delete="openDeleteModal"
+          @restore="openRestoreModal"
         ></HighlightCard>
       </div>
     </div>
@@ -169,7 +182,7 @@ watch(
     <!-- Delete Highlight Modal -->
     <BaseModal
       :open="showDeleteModal"
-      :title="t('library.deleteBook')"
+      :title="t('highlights.deleteHighlight')"
       @close="closeDeleteModal"
       :disableClose="true"
       width="max-w-lg"
@@ -180,6 +193,21 @@ watch(
         :id="selectedHighlight?.id!!"
         @close="closeDeleteModal"
       ></DeleteEntityForm>
+    </BaseModal>
+    <!-- Restore Highlight Modal -->
+    <BaseModal
+      :open="showRestoreModal"
+      :title="t('highlights.restoreHighlight')"
+      @close="closeRestoreModal"
+      :disableClose="true"
+      width="max-w-lg"
+    >
+      <RestoreEntityForm
+        type="HIGHLIGHT"
+        :entity="selectedHighlight!!"
+        :id="selectedHighlight?.id!!"
+        @close="closeRestoreModal"
+      ></RestoreEntityForm>
     </BaseModal>
   </div>
 </template>

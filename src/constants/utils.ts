@@ -16,7 +16,3 @@ export const toFileUrl = (path: string) => {
 export function formatAsDatetime(date: string | any) {
   return date ? dayjs(date).format('DD/MM/YYYY hh:mm A') : '';
 }
-
-export function formatAsDate(date: string | any) {
-  return date ? dayjs(date).format('DD/MM/YYYY') : '';
-}

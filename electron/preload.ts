@@ -48,4 +48,10 @@ contextBridge.exposeInMainWorld('api', {
 
 contextBridge.exposeInMainWorld('electron', {
   selectCoverImage: () => ipcRenderer.invoke('selectCoverImage'),
+  openExternalUrl: (url: string) => ipcRenderer.invoke('openExternalUrl', url),
+  getDatabasePath: () => ipcRenderer.invoke('getDatabasePath'),
+  openDatabaseFolder: () => ipcRenderer.invoke('openDatabaseFolder'),
+  getCoversPath: () => ipcRenderer.invoke('getCoversPath'),
+  openCoversFolder: () => ipcRenderer.invoke('openCoversFolder'),
+  cleanupCovers: () => ipcRenderer.invoke('cleanupCovers'),
 });

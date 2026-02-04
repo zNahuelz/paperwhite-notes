@@ -25,4 +25,6 @@ export const Icons = {
   BookDashed: 'lucide:book-dashed',
   BookCheck: 'lucide:book-check',
   Restore: 'lucide:database-backup',
+  Moon: 'lucide:moon',
+  Sun: 'lucide:sun',
 };

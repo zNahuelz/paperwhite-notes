@@ -3,7 +3,7 @@
     "save": "Guardar",
     "saving": "Guardando",
     "cancel": "Cancelar",
-    "switchTheme": "Cambiar tema",
+    "switchTheme": "Cambiar Tema",
     "loading": "Cargando",
     "selectedFile": "Archivo seleccionado",
     "continue": "Continuar",
@@ -19,7 +19,10 @@
     "selectImage": "Seleccionar Imagen",
     "delete": "Eliminar",
     "deletePermanently": "E. Permanente",
-    "confirm": "Confirmar"
+    "confirm": "Confirmar",
+    "restore": "Restaurar",
+    "entitiesVisibility": "Incluir eliminados",
+    "cleanCovers": "Eliminar Portadas Inválidas"
   },
   "menu": {
     "settings": "Configuración",
@@ -38,9 +41,9 @@
     "errorsFound": "Se encontró un total de {count} error | Se encontraron un total de {count} errores",
     "viewErrors": "Ver errores",
     "jobResult": "Resultado de operación",
-    "savedBooks": "Se guardo un total de {count} libro | Se guardo un total de {count} libros",
+    "savedBooks": "Se guardó un total de {count} libro | Se guardó un total de {count} libros",
     "noNewBooksSaved": "No se encontraron libros nuevos durante el proceso",
-    "savedHighlights": "Se guardo un total de {count} cita | Se guardo un total de {count} citas",
+    "savedHighlights": "Se guardó un total de {count} cita | Se guardó un total de {count} citas",
     "noNewHighlightsSaved": "No se encontraron nuevas citas durante el proceso",
     "jobErrors": "Errores de operación",
     "errorDescription": "Error #{id} \n Línea: {line}"
@@ -55,7 +58,10 @@
     "loadingBooks": "Cargando libros...",
     "deleteBook": "Eliminar libro",
     "bookDeletionAlert": "¿Está seguro de eliminar el siguiente libro? Al eliminarse permanentemente, no podrá ser recuperado (solo cargando My Clippings.txt desde el inicio).",
-    "bookDeleted": "Libro eliminado correctamente"
+    "bookDeleted": "Libro eliminado correctamente",
+    "bookRestorationAlert": "¿Está seguro de restaurar el siguiente libro?",
+    "bookRestored": "Libro restaurado correctamente",
+    "restoreBook": "Restaurar libro"
   },
   "highlights": {
     "highlight": "Cita",
@@ -64,10 +70,20 @@
     "editHighlight": "Editar cita",
     "loadingHighlights": "Cargando citas...",
     "highlightDeletionAlert": "¿Está seguro de eliminar la siguiente cita? Al eliminarse permanentemente, no podrá ser recuperada (solo cargando My Clippings.txt desde el inicio).",
-    "highlightDeleted": "Cita eliminada correctamente"
+    "highlightDeleted": "Cita eliminada correctamente",
+    "highlightRestorationAlert": "¿Está seguro de restaurar la siguiente cita?",
+    "highlightRestored": "Cita restaurada correctamente",
+    "deleteHighlight": "Eliminar cita",
+    "restoreHighlight": "Restaurar cita"
   },
   "settings": {
-    "appLanguage": "Idioma de la Aplicación"
+    "appLanguage": "Idioma de la Aplicación",
+    "dbPath": "Ruta de Base de Datos",
+    "coversPath": "Ruta de Portadas",
+    "openExplorer": "Abrir explorador de archivos",
+    "cleanUnusedCoversAlert": "Estás a punto de eliminar las portadas de libros en desuso; esta acción no se puede revertir. ADVERTENCIA: Esta operación eliminará todos los archivos no utilizados del directorio covers. ¿Desea continuar?",
+    "coverCleanupCompleted": "Se eliminaron un total de {count} portada de libro en desuso | Se eliminaron un total de {count} portadas de libros en desuso",
+    "unusedCoversCleanup": "Limpieza de portadas"
   },
   "errors": {
     "error": "Error",
@@ -82,6 +98,9 @@
     "highlightSaveFailed": "Ha sucedido un error durante el guardado de la cita, intente nuevamente",
     "loadHighlightsFailed": "Ha sucedido un error durante la carga de citas. Detalles: {error}",
     "bookDeleteFailed": "Ha sucedido un error durante la eliminación del libro, intente nuevamente. Detalles: {error}",
-    "highlightDeleteFailed": "Ha sucedido un error durante la eliminación de la cita, intente nuevamente. Detalles: {error}"
+    "highlightDeleteFailed": "Ha sucedido un error durante la eliminación de la cita, intente nuevamente. Detalles: {error}",
+    "bookRestoreFailed": "Ha sucedido un error durante la restauración del libro, intente nuevamente. Detalles: {error}",
+    "highlightRestoreFailed": "Ha sucedido un error durante la restauración de la cita, intente nuevamente. Detalles: {error}",
+    "coverCleanupFailed": "Ha sucedido un error durante la eliminación de portadas de libros en desuso, intente nuevamente. Detalles: {error}"
   }
 }

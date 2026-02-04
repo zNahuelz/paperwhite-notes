@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { ref, onMounted, computed, watch } from 'vue';
+import { ref, computed, watch } from 'vue';
 import { Book } from 'electron/db/types/book';
 import { useI18n } from 'vue-i18n';
 import BookCard from '@/components/BookCard.vue';
@@ -11,6 +11,7 @@ import BaseModal from '@/components/BaseModal.vue';
 import EditBookForm from '@/forms/EditBookForm.vue';
 import BaseLoading from '@/components/BaseLoading.vue';
 import DeleteEntityForm from '@/forms/DeleteEntityForm.vue';
+import RestoreEntityForm from '@/forms/RestoreEntityForm.vue';
 
 const { t } = useI18n();
 const books = ref<Book[]>([]);
@@ -20,6 +21,7 @@ const showEditModal = ref(false);
 const selectedBook = ref<Book | undefined>(undefined);
 const errorMessage = ref('');
 const showDeleteModal = ref(false);
+const showRestoreModal = ref(false);
 
 const includeDeleted = ref(false);
 
@@ -66,6 +68,16 @@ const closeDeleteModal = () => {
   selectedBook.value = undefined;
 };
 
+const openRestoreModal = (book: Book) => {
+  selectedBook.value = book;
+  showRestoreModal.value = true;
+};
+
+const closeRestoreModal = () => {
+  showRestoreModal.value = false;
+  selectedBook.value = undefined;
+};
+
 watch(
   () => includeDeleted.value,
   async () => {
@@ -97,12 +109,13 @@ watch(
           class="join-item"
           @click="search = ''"
         ></BaseButton>
-        <!-- TODO: Modify css or change input type. -->
-        <label class="toggle toggle-xl text-base-content">
-          <input type="checkbox" v-model="includeDeleted" />
-          <Icon :icon="Icons.BookCheck" aria-label="enabled"></Icon>
-          <Icon :icon="Icons.BookDashed" aria-label="disabled"></Icon>
-        </label>
+        <input
+          type="checkbox"
+          class="checkbox checkbox-primary checkbox-xl"
+          v-model="includeDeleted"
+          :title="t('common.entitiesVisibility').toUpperCase()"
+        />
+        <Icon :icon="!includeDeleted ? Icons.BookCheck : Icons.BookDashed" class="text-xl"></Icon>
       </div>
     </div>
     <div
@@ -115,6 +128,7 @@ watch(
           :key="book.id"
           @edit="openEditForm"
           @delete="openDeleteModal"
+          @restore="openRestoreModal"
         ></BookCard>
       </div>
     </div>
@@ -159,6 +173,21 @@ watch(
         :id="selectedBook?.id!!"
         @close="closeDeleteModal"
       ></DeleteEntityForm>
+    </BaseModal>
+    <!-- Restore Book Modal -->
+    <BaseModal
+      :open="showRestoreModal"
+      :title="t('library.restoreBook')"
+      @close="closeRestoreModal"
+      :disableClose="true"
+      width="max-w-lg"
+    >
+      <RestoreEntityForm
+        type="BOOK"
+        :entity="selectedBook!!"
+        :id="selectedBook?.id!!"
+        @close="closeRestoreModal"
+      ></RestoreEntityForm>
     </BaseModal>
   </div>
 </template>

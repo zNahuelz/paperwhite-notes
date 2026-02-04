@@ -5,6 +5,7 @@ import { Icon } from '@iconify/vue';
 import { useTheme } from '@/composables/useTheme';
 import { AppRoutes } from './router/routes';
 import { useI18n } from 'vue-i18n';
+import { Icons } from '@/constants/icons.ts';
 
 const { isDark, toggleTheme } = useTheme();
 const { t } = useI18n();
@@ -34,8 +35,12 @@ watch(sidebarOpen, (val) => {
   localStorage.setItem('sidebarStatus', val.toString());
 });
 
+const openGitHub = () => {
+  window.electron.openExternalUrl('https://github.com/zNahuelz');
+};
+
 onMounted(() => {
-  sidebarOpen.value = localStorage.getItem('sidebarStatus') === 'true' ? true : false;
+  sidebarOpen.value = localStorage.getItem('sidebarStatus') === 'true';
 });
 </script>
 
@@ -86,7 +91,7 @@ onMounted(() => {
             class="w-full flex items-center py-3 rounded-lg transition-all duration-200 hover:bg-primary/50"
             :class="[sidebarOpen ? 'justify-start px-4 text-left' : 'justify-center px-0']"
           >
-            <Icon :icon="isDark ? 'lucide:sun' : 'lucide:moon'" class="text-2xl shrink-0" />
+            <Icon :icon="isDark ? Icons.Sun : Icons.Moon" class="text-2xl shrink-0" />
             <span v-if="sidebarOpen" class="font-medium ml-4">{{ t('common.switchTheme') }}</span>
           </button>
         </nav>
@@ -96,7 +101,12 @@ onMounted(() => {
           class="mt-8 pt-6 border-t border-base-300"
           :class="[isDark ? 'border-white/70' : '']"
         >
-          <p class="text-xs text-base-content/60 text-center"><3</p>
+          <p
+            class="text-xs text-base-content/60 text-center hover:font-bold hover:text-success"
+            @click="openGitHub"
+          >
+            Dev. GitHub <3
+          </p>
         </div>
       </div>
     </aside>
