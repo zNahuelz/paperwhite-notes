@@ -40,7 +40,7 @@ PaperWhite Notes es una aplicación de escritorio simple para la importación, g
 
 - [Windows >=10](https://www.microsoft.com/en-us/software-download/windows10)
 - Linux y MacOS (Puedes intentar compilarlo vos!)
-- Linux: Puedes encotrar un .zip en la sección [releases](https://github.com/zNahuelz/paperwhite-notes/releases)
+- Linux: Puedes encontrar un .zip en la sección [releases](https://github.com/zNahuelz/paperwhite-notes/releases)
 
 ## Uso
 
@@ -57,8 +57,8 @@ Cumplidos los requisitos para ejecutar el proyecto, puedes probar la herramienta
 
 Puedes dirigirte a la sección de [releases](https://github.com/zNahuelz/paperwhite-notes/releases) para descargar la última versión de la aplicación.
 
-- El archivo .exe te permite instalar el archivo de forma fácil y rápida, dejando un acceso directo tanto en el escritorio como en el menú inicio.
-- El archivo .zip te permite descargar la versión portable del programa (para utilizarlo sin necesidad de instalarlo); solo descomprime el archivo y ejecuta "PaperWhite Notes.exe"
+- El archivo .exe te permite instalar la aplicación de forma fácil y rápida, dejando un acceso directo tanto en el escritorio como en el menú inicio.
+- El archivo .zip te permite descargar la versión portable de la aplicación (para utilizarlo sin necesidad de instalarlo); solo descomprime el archivo y ejecuta "PaperWhite Notes.exe"
 
 ## Imágenes
 
