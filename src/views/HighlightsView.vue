@@ -1,9 +1,9 @@
 <script setup lang="ts">
-import { Book } from 'electron/db/types/book';
+import { Book } from '@/types/book.ts';
 import { useI18n } from 'vue-i18n';
 import { useRoute, useRouter } from 'vue-router';
 import { ref, computed, watch } from 'vue';
-import { Highlight } from 'electron/db/types/highlight';
+import { Highlight } from '@/types/highlight.ts';
 import BaseLoading from '@/components/BaseLoading.vue';
 import HighlightCard from '@/components/HighlightCard.vue';
 import BaseInput from '@/components/BaseInput.vue';
@@ -21,7 +21,7 @@ const route = useRoute();
 const id = route.params.id as string;
 
 const isLoading = ref(true);
-const book = ref<Book | undefined>(undefined);
+const book = ref<Book | null>(null);
 const highlights = ref<Highlight[]>([]);
 const search = ref('');
 const showEditModal = ref(false);

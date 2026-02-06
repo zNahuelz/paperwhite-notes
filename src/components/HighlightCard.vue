@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { Highlight } from 'electron/db/types/highlight';
+import { Highlight } from '@/types/highlight.ts';
 import { Icons } from '@/constants/icons';
 import BaseButton from './BaseButton.vue';
 import { computed, ref } from 'vue';

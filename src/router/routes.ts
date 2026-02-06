@@ -27,7 +27,7 @@ export const AppRoutes = [
     labelKey: 'routes.bookHighlights',
     icon: Icons.Library,
     component: HighlightsView,
-    visibleOnsidebar: false,
+    visibleOnSidebar: false,
   },
   {
     path: '/settings',

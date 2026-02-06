@@ -1,5 +1,4 @@
 import { app, BrowserWindow, globalShortcut, ipcMain, Menu, shell } from 'electron';
-import { createRequire } from 'node:module';
 import { fileURLToPath } from 'node:url';
 import path from 'node:path';
 import { initDatabase } from './db';
@@ -9,7 +8,6 @@ import { dialog } from 'electron';
 import fs from 'node:fs';
 import crypto from 'node:crypto';
 
-const require = createRequire(import.meta.url);
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
 
 process.on('unhandledRejection', (reason) => {
@@ -54,8 +52,11 @@ function createWindow() {
     title: 'PaperWhite Notes',
     icon: getIconPath(),
     webPreferences: {
-      preload: path.join(__dirname, 'preload.mjs'),
+      preload: path.join(__dirname, 'preload.cjs'),
       webSecurity: false,
+      sandbox: false,
+      nodeIntegration: false,
+      contextIsolation: true,
     },
   });
 
@@ -68,7 +69,7 @@ function createWindow() {
     win.loadURL(VITE_DEV_SERVER_URL);
   } else {
     // win.loadFile('dist/index.html')
-    win.loadFile(path.join(RENDERER_DIST, 'index.html'));
+    win.loadURL(path.join(RENDERER_DIST, 'index.html'));
   }
 }
 
@@ -109,7 +110,9 @@ function registerIpcHandlers() {
     await shell.openExternal(url);
   });
 
-  const dbPath = path.join(app.getPath('userData'), 'paperwhite-notes.db');
+  const dbPath = app.isPackaged
+    ? path.join(app.getPath('userData'), 'paperwhite-notes.db')
+    : path.join(__dirname, '../paperwhite-notes.db'); //path.join(app.getPath('userData'), 'paperwhite-notes.db');
   const coversDir = path.join(app.getPath('userData'), 'covers');
 
   if (!fs.existsSync(coversDir)) {
@@ -154,8 +157,8 @@ function registerIpcHandlers() {
           const filePath = path.join(coversDir, file);
           fs.unlinkSync(filePath);
           deletedCount++;
-        } catch (err) {
-          console.error(`Failed to delete ${file}:`, err);
+        } catch (error) {
+          throw new Error(`Failed to delete ${file} - Details: ${error}`);
         }
       }
     }

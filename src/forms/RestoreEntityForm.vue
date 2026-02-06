@@ -1,8 +1,8 @@
 <script setup lang="ts">
 import { useI18n } from 'vue-i18n';
 import { ref } from 'vue';
-import { Book } from '../../electron/db/types/book.ts';
-import { Highlight } from '../../electron/db/types/highlight.ts';
+import type { Book } from '@/types/book.ts';
+import type { Highlight } from '@/types/highlight.ts';
 import { Icons } from '@/constants/icons.ts';
 import BaseButton from '@/components/BaseButton.vue';
 import { Icon } from '@iconify/vue';

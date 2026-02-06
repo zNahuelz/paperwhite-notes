@@ -22,7 +22,8 @@
     "confirm": "Confirm",
     "restore": "Restore",
     "entitiesVisibility": "Include deleted",
-    "cleanCovers": "Delete Unused Covers"
+    "cleanCovers": "Delete Unused Covers",
+    "needHelp": "Need help?"
   },
   "menu": {
     "settings": "Settings",
@@ -46,7 +47,15 @@
     "savedHighlights": "A total of {count} highlight was saved | A total of {count} highlights were saved",
     "noNewHighlightsSaved": "No new highlights were found during the process",
     "jobErrors": "Job errors",
-    "errorDescription": "Error #{id} \n Line: {line}"
+    "errorDescription": "Error #{id} \n Line: {line}",
+    "userGuide": "User Guide"
+  },
+  "userGuide": {
+    "stepOne": "Connect your Kindle to your computer via USB.",
+    "stepTwo": "Look for the file \"My Clippings.txt\", it is usually located in the \"documents\" folder of your Kindle's internal memory.",
+    "stepThree": "Save the file in a folder on your computer.",
+    "stepFour": "Select the file on the application's main page and click continue; wait for the import of your appointments to finish.",
+    "info": "That's it! You'll need to repeat this process whenever you want to update your highlights in the app. Afterward, you can assign covers to your books, as well as edit their titles, authors, and synopses. Remember that you can also edit your highlights, copy them for easy sharing, and delete them if necessary."
   },
   "library": {
     "myBooks": "My Books",
@@ -101,6 +110,7 @@
     "highlightDeleteFailed": "An error occurred while deleting the highlight / quote, please try again. Details: {error}",
     "bookRestoreFailed": "An error occurred while restoring the book, please try again. Details: {error}",
     "highlightRestoreFailed": "An error occurred while restoring the highlight / quote, please try again. Details: {error}",
-    "coverCleanupFailed": "An error occurred while deleting unused book covers, please try again. Details: {error}"
+    "coverCleanupFailed": "An error occurred while deleting unused book covers, please try again. Details: {error}",
+    "parsingError": "An error occurred while parsing the file, please try again. Details: {error}"
   }
 }

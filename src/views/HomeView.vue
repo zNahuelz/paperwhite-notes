@@ -14,35 +14,39 @@ import BaseLoading from '@/components/BaseLoading.vue';
 import BaseModal from '@/components/BaseModal.vue';
 import { Icons } from '@/constants/icons.ts';
 import { Icon } from '@iconify/vue';
+import appLogo from '@/assets/images/logo-transparent.png';
 
 const { t } = useI18n();
 const file = ref<File | null>(null);
 const isLoading = ref(false);
 const showResultsModal = ref(false);
 const showErrorsModal = ref(false);
+const showHelpModal = ref(false);
 
 const clippings = ref<Clipping[]>([]);
 const errors = ref<ClippingParseError[]>([]);
 const parseResult = ref<ParseResult | null>();
 const savedBooks = ref(0);
 const savedHighlights = ref(0);
+const errorMessage = ref('');
 
 const processFile = async () => {
   if (!file.value) return;
   isLoading.value = true;
   clippings.value = [];
   errors.value = [];
+  errorMessage.value = '';
   try {
     const text = await readFileAsText(file.value);
     parseResult.value = parseClippings(text);
     clippings.value = parseResult.value.clippings;
     errors.value = parseResult.value.errors;
     await storeBooks().then(async () => await storeHighlights());
-  } catch (error) {
-    console.log(error);
-  } finally {
     isLoading.value = false;
     showResultsModal.value = true;
+  } catch (error: any) {
+    errorMessage.value = error?.message ?? String(error);
+    isLoading.value = false;
   }
 };
 
@@ -55,7 +59,7 @@ const storeBooks = async () => {
       await window.api.books.create({
         title: e.bookName,
         description: '',
-        author: e.author ?? null,
+        author: e.author ?? undefined,
       });
     }
   }
@@ -99,6 +103,7 @@ const handleCloseModal = () => {
   clippings.value = [];
   file.value = null;
   errors.value = [];
+  errorMessage.value = '';
   parseResult.value = null;
   savedBooks.value = 0;
   showResultsModal.value = false;
@@ -118,13 +123,29 @@ const blockLines = (block: string) => {
     <h1 class="text-3xl font-semibold">{{ t('home.home') }}</h1>
     <div class="divider"></div>
     <div class="flex flex-col items-center">
-      <div class="w-80 space-y-2" v-if="!isLoading">
-        <BaseFileInput accept=".txt" v-model="file" width="w-full"></BaseFileInput>
-        <BaseButton :label="t('common.continue')" width="w-full" @click="processFile"></BaseButton>
+      <div class="space-y-2" v-if="!isLoading">
+        <div class="w-80 space-y-2">
+          <img :src="appLogo" alt="App Logo" @dragstart.prevent @contextmenu.prevent />
+          <BaseFileInput accept=".txt" v-model="file" width="w-full"></BaseFileInput>
+          <BaseButton
+            :label="t('common.continue')"
+            width="w-full"
+            @click="processFile"
+          ></BaseButton>
+          <BaseButton
+            :label="t('common.needHelp')"
+            width="w-full"
+            color="btn-secondary"
+            @click="showHelpModal = true"
+          ></BaseButton>
+        </div>
       </div>
       <div class="w-full" v-if="isLoading">
         <BaseLoading :message="`${t('home.processingFile')}...`"></BaseLoading>
       </div>
+      <p v-if="errorMessage != ''" class="font-semibold text-error pt-4 w-75">
+        {{ t('errors.parsingError', { error: errorMessage }) }}
+      </p>
     </div>
   </div>
 
@@ -218,12 +239,11 @@ const blockLines = (block: string) => {
               >
             </div>
             <div class="mockup-code w-full my-2" v-if="error.line">
-              <!--TODO: Fix... Something weird with css.-->
               <pre
                 v-for="(blockLine, index) in blockLines(error.block)"
                 :key="index"
                 :data-prefix="index + 1"
-                :class="[index + 1 === error.line ? 'bg-warning text-warning-content' : '']"
+                :class="[index + 1 === error.line ? 'bg-warning' : '']"
               >
                 <code>{{blockLine}}</code>
               </pre>
@@ -234,4 +254,24 @@ const blockLines = (block: string) => {
     </div>
   </BaseModal>
   <!-- Errors Modal -->
+
+  <!-- Help Modal -->
+  <BaseModal
+    :open="showHelpModal"
+    :title="t('home.userGuide')"
+    @close="showHelpModal = false"
+    :disableClose="false"
+    width="max-w-xl"
+  >
+    <div>
+      <ul class="list-decimal list-inside font-light text-md mb-2 space-y-2">
+        <li>{{ t('userGuide.stepOne') }}</li>
+        <li>{{ t('userGuide.stepTwo') }}</li>
+        <li>{{ t('userGuide.stepThree') }}</li>
+        <li>{{ t('userGuide.stepFour') }}</li>
+      </ul>
+      <p class="text-center font-semibold">{{ t('userGuide.info') }}</p>
+    </div>
+  </BaseModal>
+  <!-- Help Modal -->
 </template>

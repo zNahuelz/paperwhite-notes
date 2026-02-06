@@ -53,7 +53,7 @@ const cleanUnusedCovers = async () => {
     <div class="join join-vertical md:join-horizontal mt-4">
       <BaseButton
         class="join-item"
-        color="btn-secondary"
+        color="btn-error"
         :label="t('common.cancel')"
         @click="handleClose"
         :disabled="isCleaning"

@@ -91,7 +91,11 @@ onMounted(() => {
             class="w-full flex items-center py-3 rounded-lg transition-all duration-200 hover:bg-primary/50"
             :class="[sidebarOpen ? 'justify-start px-4 text-left' : 'justify-center px-0']"
           >
-            <Icon :icon="isDark ? Icons.Sun : Icons.Moon" class="text-2xl shrink-0" />
+            <Icon
+              :icon="isDark ? Icons.Sun : Icons.Moon"
+              class="text-2xl shrink-0"
+              :class="[!isDark ? 'text-secondary' : '']"
+            />
             <span v-if="sidebarOpen" class="font-medium ml-4">{{ t('common.switchTheme') }}</span>
           </button>
         </nav>

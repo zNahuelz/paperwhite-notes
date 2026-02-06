@@ -22,7 +22,8 @@
     "confirm": "Confirmar",
     "restore": "Restaurar",
     "entitiesVisibility": "Incluir eliminados",
-    "cleanCovers": "Eliminar Portadas Inválidas"
+    "cleanCovers": "Eliminar Portadas Inválidas",
+    "needHelp": "¿Necesitas ayuda?"
   },
   "menu": {
     "settings": "Configuración",
@@ -46,7 +47,15 @@
     "savedHighlights": "Se guardó un total de {count} cita | Se guardó un total de {count} citas",
     "noNewHighlightsSaved": "No se encontraron nuevas citas durante el proceso",
     "jobErrors": "Errores de operación",
-    "errorDescription": "Error #{id} \n Línea: {line}"
+    "errorDescription": "Error #{id} \n Línea: {line}",
+    "userGuide": "Guía de Uso"
+  },
+  "userGuide": {
+    "stepOne": "Conecta tu Kindle vía USB al computador.",
+    "stepTwo": "Busca el archivo \"My Clippings.txt\", generalmente se encuentra en la carpeta \"documents\" de la memoria interna de tu Kindle.",
+    "stepThree": "Guarda el archivo en una carpeta de tu computador.",
+    "stepFour": "Selecciona el archivo en la página principal de la aplicación y da click en continuar; espera a que termine la importación de tus citas.",
+    "info": "¡Listo! Deberás repetir el proceso siempre que quieras actualizar tus citas en la aplicación; posteriormente, puedes asignarles portadas a tus libros, así como editar sus títulos, autores y sinopsis. Recuerda que también puedes editar tus citas, copiarlas para compartirlas fácilmente y eliminarlas de ser necesario."
   },
   "library": {
     "myBooks": "Mis Libros",
@@ -101,6 +110,7 @@
     "highlightDeleteFailed": "Ha sucedido un error durante la eliminación de la cita, intente nuevamente. Detalles: {error}",
     "bookRestoreFailed": "Ha sucedido un error durante la restauración del libro, intente nuevamente. Detalles: {error}",
     "highlightRestoreFailed": "Ha sucedido un error durante la restauración de la cita, intente nuevamente. Detalles: {error}",
-    "coverCleanupFailed": "Ha sucedido un error durante la eliminación de portadas de libros en desuso, intente nuevamente. Detalles: {error}"
+    "coverCleanupFailed": "Ha sucedido un error durante la eliminación de portadas de libros en desuso, intente nuevamente. Detalles: {error}",
+    "parsingError": "Ha sucedido un error durante la lectura del archivo, intente nuevamente. Detalles: {error}"
   }
 }

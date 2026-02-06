@@ -37,7 +37,13 @@ export function runMigrations(db: Database.Database) {
   for (const file of files) {
     if (!file.endsWith('.sql') || applied.has(file)) continue;
 
+    const fullPath = path.join(migrationsDir, file);
     const sql = fs.readFileSync(path.join(migrationsDir, file), 'utf8');
+
+    if (!sql) {
+      console.error(`[DB] Migration file ${file} is empty or unreadable at ${fullPath}`);
+      continue;
+    }
 
     const migrationTransaction = db.transaction(() => {
       db.exec(sql);

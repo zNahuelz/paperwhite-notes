@@ -1,12 +1,14 @@
 {
   "name": "paperwhite-notes",
+  "description": "A simple Kindle bookmarks manager.",
+  "author": "zNahuelz <znahuelz@protonmail.com> (https://github.com/zNahuelz)",
   "private": true,
-  "version": "0.0.0",
+  "version": "1.0.0",
   "type": "module",
   "scripts": {
     "dev": "vite",
     "electron:dev": "electron .",
-    "build": "vue-tsc && vite build && electron-builder",
+    "build": "vue-tsc && vite build && electron-builder --win",
     "preview": "vite preview",
     "format": "prettier --write .",
     "postinstall": "electron-builder install-app-deps"
@@ -39,9 +41,16 @@
   "main": "dist-electron/main.js",
   "build": {
     "appId": "com.paperwhite.notes",
+    "productName": "PaperWhite Notes",
+    "files": [
+      "dist/**/*",
+      "dist-electron/**/*"
+    ],
     "asar": true,
     "asarUnpack": [
-      "**/node_modules/better-sqlite3/**/*"
+      "**/node_modules/better-sqlite3/**/*",
+      "**/node_modules/bindings/**/*",
+      "**/node_modules/file-uri-to-path/**/*"
     ],
     "extraResources": [
       {
@@ -52,6 +61,19 @@
         "from": "public",
         "to": "public"
       }
-    ]
+    ],
+    "win": {
+      "icon": "public/icon.ico"
+    },
+    "mac": {
+      "icon": "public/icon.icns"
+    },
+    "linux": {
+      "target": [
+        "zip"
+      ],
+      "category": "Utility",
+      "icon": "public/icon.png"
+    }
   }
 }

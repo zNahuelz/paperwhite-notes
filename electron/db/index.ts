@@ -1,11 +1,14 @@
-import Database from 'better-sqlite3';
-import path from 'node:path';
+import { createRequire } from 'node:module';
 import { app } from 'electron';
+import path from 'node:path';
 import { runMigrations } from './migrate';
+import type { Database as DatabaseType } from 'better-sqlite3';
+const require = createRequire(import.meta.url);
+const Database = require('better-sqlite3');
 
-let db: Database.Database;
+let db: DatabaseType;
 
-export function initDatabase(): Database.Database {
+export function initDatabase(): DatabaseType {
   if (!app.isReady()) {
     throw new Error('[DB] initDatabase() called before app ready');
   }
@@ -28,7 +31,7 @@ export function initDatabase(): Database.Database {
   return db;
 }
 
-export function getDatabase(): Database.Database {
+export function getDatabase(): DatabaseType {
   if (!db) throw new Error('[DB] Database not initialized');
   return db;
 }

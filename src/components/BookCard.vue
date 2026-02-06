@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { Book } from 'electron/db/types/book';
+import { Book } from '@/types/book.ts';
 import { Icons } from '@/constants/icons';
 import { Icon } from '@iconify/vue';
 import BaseButton from './BaseButton.vue';
